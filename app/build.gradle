@@ -16,6 +16,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
 }
 
 dependencies {
@@ -28,13 +32,15 @@ dependencies {
     implementation "android.arch.lifecycle:runtime:1.0.3"
     implementation "com.squareup.retrofit2:retrofit:2.3.0"
     implementation "com.squareup.retrofit2:converter-gson:2.3.0"
-    implementation "com.google.dagger:dagger-android:2.11"
-    implementation "com.google.dagger:dagger-android-support:2.11"
+    implementation "com.jakewharton.timber:timber:4.6.0"
+    compile 'com.google.dagger:dagger:2.11'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.8.0'
 
-    annotationProcessor "com.google.dagger:dagger-android-processor:2.11"
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
     annotationProcessor "android.arch.lifecycle:compiler:1.0.0"
     annotationProcessor "android.arch.persistence.room:compiler:1.0.0"
-    
+    annotationProcessor 'com.google.dagger:dagger-android-processor:2.11'
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'

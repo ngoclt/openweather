@@ -3,4 +3,14 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="blueMaterial">#74ffff</color>
+    <color name="grayMaterial">#546E7A</color>
+    <color name="white">#FFFFFF</color>
+    <color name="extremelyCold">#03A9F4</color>
+    <color name="veryCold">#29B6F6</color>
+    <color name="normalCold">#4FC3F7</color>
+    <color name="justCold">#81D4FA</color>
+    <color name="normal">#B3E5FC</color>
+    <color name="warm">#FFF59D</color>
+    <color name="hot">#FF7043</color>
 </resources>

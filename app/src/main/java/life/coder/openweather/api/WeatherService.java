@@ -1,8 +1,7 @@
 package life.coder.openweather.api;
 
-import android.arch.lifecycle.LiveData;
-
-import life.coder.openweather.repository.entity.DayWeather;
+import life.coder.openweather.api.model.OWCity;
+import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
@@ -12,6 +11,9 @@ import retrofit2.http.Query;
 
 public interface WeatherService {
 
-    @GET
-    LiveData<DayWeather> getDayWeather(@Query("q") String name);
+    @GET("weather")
+    Call<OWCity> getDayWeather(
+            @Query("lat") String lat,
+            @Query("lon") String lon);
+
 }
