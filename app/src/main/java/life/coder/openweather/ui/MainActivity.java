@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -70,10 +71,20 @@ public class MainActivity extends AppCompatActivity implements OWCallback {
         tvNoPermission = findViewById(R.id.tv_no_permission);
         btnRefresh = findViewById(R.id.btn_refresh);
 
-        getLatlong(this);
+        ltMainContainer.setOnClickListener(view -> {
+            goToForeCast();
+        });
         viewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
         observeViewModel(viewModel);
+        getLatlong(this);
 
+    }
+
+    private void goToForeCast() {
+        Intent foreCastIntent = new Intent(this, ForecastActivity.class);
+        foreCastIntent.putExtra("lat", latitude);
+        foreCastIntent.putExtra("lon", longitude);
+        startActivity(foreCastIntent);
     }
 
     private void observeViewModel(MainActivityViewModel viewModel) {
@@ -220,11 +231,16 @@ public class MainActivity extends AppCompatActivity implements OWCallback {
             ActivityCompat.requestPermissions(this, permissionsNeeded, PERMISSION_REQUEST);
         } else {
             LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            Location location;
             if (lm != null) {
-                location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                setLatitude(df.format(location.getLatitude()));
-                setLongitude(df.format(location.getLongitude()));
+                Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                if (location != null) {
+                    setLatitude(df.format(location.getLatitude()));
+                    setLongitude(df.format(location.getLongitude()));
+                    viewModel.getOwCityWeatherLiveData(latitude, longitude, this);
+                } else {
+                    callback.onFailure();
+                    return;
+                }
                 callback.onSuccess();
             } else {
                 callback.onFailure();
@@ -241,16 +257,7 @@ public class MainActivity extends AppCompatActivity implements OWCallback {
                 return;
             }
         }
-        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        Location location;
-        if (lm != null) {
-            location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            setLatitude(df.format(location.getLatitude()));
-            setLongitude(df.format(location.getLongitude()));
-            displayContent();
-        } else {
-            displayNoPermission();
-        }
+        getLatlong(this);
     }
 
     public void setLatitude(String latitude) {

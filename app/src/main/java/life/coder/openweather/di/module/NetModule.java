@@ -1,7 +1,5 @@
 package life.coder.openweather.di.module;
 
-import android.util.Log;
-
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -16,8 +14,7 @@ import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
-import static android.content.ContentValues.TAG;
+import timber.log.Timber;
 
 /**
  * Created by thegaylord on 30/11/2017.
@@ -58,7 +55,7 @@ public class NetModule {
 
             Request request = requestBuilder.build();
 
-            Log.i(TAG, chain.request().toString());
+            Timber.i(chain.request().toString());
             return chain.proceed(request);
         });
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();

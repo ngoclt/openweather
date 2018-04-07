@@ -7,6 +7,7 @@ import javax.inject.Inject;
 
 import life.coder.openweather.api.WeatherService;
 import life.coder.openweather.api.model.OWCity;
+import life.coder.openweather.api.model.OWForecast;
 import life.coder.openweather.di.component.DaggerNetComponent;
 import life.coder.openweather.di.module.NetModule;
 import life.coder.openweather.utils.OWCallback;
@@ -56,6 +57,27 @@ public class OWRepository {
 
                     @Override
                     public void onFailure(Call<OWCity> call, Throwable t) {
+                        callback.onFailure();
+                    }
+                });
+        return data;
+    }
+
+    public LiveData<OWForecast> getOWForeCast(String lat, String lon, OWCallback callback) {
+        final MutableLiveData<OWForecast> data = new MutableLiveData<>();
+
+        weatherService.getForeCast(lat, lon)
+                .enqueue(new Callback<OWForecast>() {
+                    @Override
+                    public void onResponse(Call<OWForecast> call, Response<OWForecast> response) {
+                        if (response.isSuccessful()) {
+                            data.setValue(response.body());
+                            callback.onSuccess();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<OWForecast> call, Throwable t) {
                         callback.onFailure();
                     }
                 });
