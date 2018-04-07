@@ -2,6 +2,7 @@ package life.coder.openweather.ui;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
@@ -29,7 +30,7 @@ import life.coder.openweather.utils.OWCallback;
 
 import static android.content.pm.PackageManager.PERMISSION_DENIED;
 
-public class MainActivity extends AppCompatActivity implements OWCallback {
+public class MainActivity extends AppCompatActivity implements OWCallback, Observer<OWCity> {
 
     private static final int PERMISSION_REQUEST = 555;
     private TextView tvWeather, tvCityName,
@@ -72,9 +73,16 @@ public class MainActivity extends AppCompatActivity implements OWCallback {
         tvNoPermission = findViewById(R.id.tv_no_permission);
         btnRefresh = findViewById(R.id.btn_refresh);
 
+        btnRefresh.setOnClickListener(view -> {
+            btnRefresh.setAnimation(refreshAnim);
+            btnRefresh.startAnimation(refreshAnim);
+            viewModel.getOwCityWeatherLiveData(latitude, longitude, this);
+        });
+
         ltMainContainer.setOnClickListener(view -> {
             goToForeCast();
         });
+
         viewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
         observeViewModel(viewModel);
         getLatlong(this);
@@ -90,8 +98,8 @@ public class MainActivity extends AppCompatActivity implements OWCallback {
 
     private void observeViewModel(MainActivityViewModel viewModel) {
 
-        viewModel.getOwCityWeatherLiveData(latitude, longitude, this).observe(this,
-                owCityWeather -> {
+        viewModel.getOwCityWeatherLiveData(latitude, longitude, this)
+                .observe(this, owCityWeather -> {
                     if (owCityWeather != null) {
                         setInfo(owCityWeather);
                     }
@@ -104,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements OWCallback {
 
         setCityName(owCityWeather.getName());
         setWeatherCondition(owCityWeather.getWeather().get(0).getDescription());
-        setTemperature(Integer.toString(owCityWeather.getMain().getTemp()));
+        setTemperature(Double.toString(owCityWeather.getMain().getTemp()));
         setHumidity(Integer.toString(owCityWeather.getMain().getHumidity()));
         setPressure(Integer.toString(owCityWeather.getMain().getPressure()));
         setVisibility(Integer.toString(owCityWeather.getVisibility()));
@@ -112,9 +120,9 @@ public class MainActivity extends AppCompatActivity implements OWCallback {
         setWeatherIcon(owCityWeather.getWeather().get(0).getId());
     }
 
-    private void setContainer(int temp) {
+    private void setContainer(Double temp) {
 
-        switch (temp / 10) {
+        switch ((int) Math.round(temp / 10)) {
             case -3:
                 ltMainContainer.setBackgroundColor(getResources().getColor(R.color.extremelyCold));
                 break;
@@ -237,12 +245,12 @@ public class MainActivity extends AppCompatActivity implements OWCallback {
                 if (location != null) {
                     setLatitude(df.format(location.getLatitude()));
                     setLongitude(df.format(location.getLongitude()));
-                    viewModel.getOwCityWeatherLiveData(latitude, longitude, this);
+                    viewModel.getOwCityWeatherLiveData(latitude, longitude, this).observeForever(this);
                 } else {
                     callback.onFailure(getString(R.string.No_location));
                     return;
                 }
-                callback.onSuccess(null);
+                callback.onSuccess();
             } else {
                 callback.onFailure(getString(R.string.No_location));
             }
@@ -275,11 +283,6 @@ public class MainActivity extends AppCompatActivity implements OWCallback {
         if (btnRefresh.getAnimation() != null) {
             btnRefresh.clearAnimation();
         }
-        btnRefresh.setOnClickListener(view -> {
-            btnRefresh.setAnimation(refreshAnim);
-            btnRefresh.startAnimation(refreshAnim);
-            viewModel.getOwCityWeatherLiveData(latitude, longitude, this);
-        });
     }
 
     private void displayNoPermission(String error) {
@@ -289,8 +292,9 @@ public class MainActivity extends AppCompatActivity implements OWCallback {
     }
 
     @Override
-    public void onSuccess(@Nullable Class result) {
+    public void onSuccess() {
         displayContent();
+
     }
 
     @Override
@@ -298,6 +302,13 @@ public class MainActivity extends AppCompatActivity implements OWCallback {
         displayNoPermission(error);
         if (btnRefresh.getAnimation() != null) {
             btnRefresh.clearAnimation();
+        }
+    }
+
+    @Override
+    public void onChanged(@Nullable OWCity owCity) {
+        if (owCity != null) {
+            setInfo(owCity);
         }
     }
 }

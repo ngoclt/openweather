@@ -1,5 +1,6 @@
 package life.coder.openweather.ui;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,7 +16,7 @@ import timber.log.Timber;
  * Created by thegaylord on 08/12/2017.
  */
 
-public class ForecastActivity extends AppCompatActivity implements OWCallback {
+public class ForecastActivity extends AppCompatActivity implements OWCallback, Observer<OWForecast> {
 
     String longitude, latitude;
     ForecastActivityViewModel viewModel;
@@ -53,12 +54,17 @@ public class ForecastActivity extends AppCompatActivity implements OWCallback {
     }
 
     @Override
-    public void onSuccess(@Nullable Class result) {
-
+    public void onSuccess() {
     }
 
     @Override
     public void onFailure(@Nullable String error) {
+    }
 
+    @Override
+    public void onChanged(@Nullable OWForecast owForecast) {
+        if (owForecast != null) {
+            setInfo(owForecast);
+        }
     }
 }

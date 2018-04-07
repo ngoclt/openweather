@@ -51,13 +51,13 @@ public class OWRepository {
                     public void onResponse(Call<OWCity> call, Response<OWCity> response) {
                         if (response.isSuccessful()) {
                             data.setValue(response.body());
-                            callback.onSuccess(null);
+                            callback.onSuccess();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<OWCity> call, Throwable t) {
-                        callback.onFailure(null);
+                        callback.onFailure(t.toString());
                     }
                 });
         return data;
@@ -72,7 +72,7 @@ public class OWRepository {
                     public void onResponse(Call<OWForecast> call, Response<OWForecast> response) {
                         if (response.isSuccessful()) {
                             data.setValue(response.body());
-                            callback.onSuccess(null);
+                            callback.onSuccess();
                         }
                     }
 
