@@ -3,10 +3,10 @@ package life.coder.openweather.ui;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import life.coder.openweather.R;
-import life.coder.openweather.api.model.OWCity;
 import life.coder.openweather.api.model.OWForecast;
 import life.coder.openweather.utils.OWCallback;
 import timber.log.Timber;
@@ -53,12 +53,12 @@ public class ForecastActivity extends AppCompatActivity implements OWCallback {
     }
 
     @Override
-    public void onSuccess() {
+    public void onSuccess(@Nullable Class result) {
 
     }
 
     @Override
-    public void onFailure() {
+    public void onFailure(@Nullable String error) {
 
     }
 }

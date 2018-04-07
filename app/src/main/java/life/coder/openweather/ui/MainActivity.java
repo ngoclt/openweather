@@ -10,6 +10,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -238,12 +239,12 @@ public class MainActivity extends AppCompatActivity implements OWCallback {
                     setLongitude(df.format(location.getLongitude()));
                     viewModel.getOwCityWeatherLiveData(latitude, longitude, this);
                 } else {
-                    callback.onFailure();
+                    callback.onFailure(getString(R.string.No_location));
                     return;
                 }
-                callback.onSuccess();
+                callback.onSuccess(null);
             } else {
-                callback.onFailure();
+                callback.onFailure(getString(R.string.No_location));
             }
         }
     }
@@ -253,7 +254,7 @@ public class MainActivity extends AppCompatActivity implements OWCallback {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         for (int grantResult : grantResults) {
             if (grantResult == PERMISSION_DENIED) {
-                displayNoPermission();
+                displayNoPermission(getString(R.string.Permission_denied));
                 return;
             }
         }
@@ -266,11 +267,6 @@ public class MainActivity extends AppCompatActivity implements OWCallback {
 
     public void setLongitude(String longitude) {
         this.longitude = longitude;
-    }
-
-    @Override
-    public void onSuccess() {
-        displayContent();
     }
 
     private void displayContent() {
@@ -286,16 +282,22 @@ public class MainActivity extends AppCompatActivity implements OWCallback {
         });
     }
 
+    private void displayNoPermission(String error) {
+        ltMainContainer.setVisibility(View.GONE);
+        tvNoPermission.setVisibility(View.VISIBLE);
+        tvNoPermission.setText(error);
+    }
+
     @Override
-    public void onFailure() {
-        displayNoPermission();
+    public void onSuccess(@Nullable Class result) {
+        displayContent();
+    }
+
+    @Override
+    public void onFailure(@Nullable String error) {
+        displayNoPermission(error);
         if (btnRefresh.getAnimation() != null) {
             btnRefresh.clearAnimation();
         }
-    }
-
-    private void displayNoPermission() {
-        ltMainContainer.setVisibility(View.GONE);
-        tvNoPermission.setVisibility(View.VISIBLE);
     }
 }
