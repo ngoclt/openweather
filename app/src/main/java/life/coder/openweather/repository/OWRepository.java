@@ -50,7 +50,7 @@ public class OWRepository {
                     @Override
                     public void onResponse(Call<OWCity> call, Response<OWCity> response) {
                         if (response.isSuccessful()) {
-                            data.setValue(response.body());
+                            data.postValue(response.body());
                             callback.onSuccess();
                         }
                     }
@@ -71,7 +71,7 @@ public class OWRepository {
                     @Override
                     public void onResponse(Call<OWForecast> call, Response<OWForecast> response) {
                         if (response.isSuccessful()) {
-                            data.setValue(response.body());
+                            data.postValue(response.body());
                             callback.onSuccess();
                         }
                     }

@@ -6,11 +6,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import life.coder.openweather.R;
 import life.coder.openweather.api.model.OWForecast;
 import life.coder.openweather.utils.OWCallback;
-import timber.log.Timber;
 
 /**
  * Created by thegaylord on 08/12/2017.
@@ -37,6 +37,7 @@ public class ForecastActivity extends AppCompatActivity implements OWCallback, O
         }
         viewModel = ViewModelProviders.of(this).get(ForecastActivityViewModel.class);
         observeViewModel(viewModel);
+        viewModel.getOwForeCastLiveData(latitude, longitude, this).observeForever(this);
     }
 
     private void observeViewModel(ForecastActivityViewModel viewModel) {
@@ -50,7 +51,6 @@ public class ForecastActivity extends AppCompatActivity implements OWCallback, O
     }
 
     private void setInfo(OWForecast owForecast) {
-        Timber.i("#######%s", owForecast.toString());
     }
 
     @Override
@@ -65,6 +65,7 @@ public class ForecastActivity extends AppCompatActivity implements OWCallback, O
     public void onChanged(@Nullable OWForecast owForecast) {
         if (owForecast != null) {
             setInfo(owForecast);
+            Log.i("#######", String.valueOf(owForecast.getList().size()));
         }
     }
 }

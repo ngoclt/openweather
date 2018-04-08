@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.animation.Animation;
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements OWCallback, Obser
     private LinearLayout ltMainContainer;
     private long sunSet = 0;
     private long sunRise = 0;
+
     String longitude, latitude;
     DecimalFormat df;
     DecimalFormatSymbols sym;
@@ -84,9 +86,12 @@ public class MainActivity extends AppCompatActivity implements OWCallback, Obser
         });
 
         viewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
-        observeViewModel(viewModel);
-        getLatlong(this);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getLatlong(this);
     }
 
     private void goToForeCast() {
@@ -97,7 +102,6 @@ public class MainActivity extends AppCompatActivity implements OWCallback, Obser
     }
 
     private void observeViewModel(MainActivityViewModel viewModel) {
-
         viewModel.getOwCityWeatherLiveData(latitude, longitude, this)
                 .observe(this, owCityWeather -> {
                     if (owCityWeather != null) {
@@ -234,8 +238,8 @@ public class MainActivity extends AppCompatActivity implements OWCallback, Obser
     }
 
     private void getLatlong(OWCallback callback) {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             String[] permissionsNeeded = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
             ActivityCompat.requestPermissions(this, permissionsNeeded, PERMISSION_REQUEST);
         } else {
@@ -245,7 +249,7 @@ public class MainActivity extends AppCompatActivity implements OWCallback, Obser
                 if (location != null) {
                     setLatitude(df.format(location.getLatitude()));
                     setLongitude(df.format(location.getLongitude()));
-                    viewModel.getOwCityWeatherLiveData(latitude, longitude, this).observeForever(this);
+                    observeViewModel(viewModel);
                 } else {
                     callback.onFailure(getString(R.string.No_location));
                     return;
