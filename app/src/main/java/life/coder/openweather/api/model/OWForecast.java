@@ -138,6 +138,9 @@ public class OWForecast {
         private RainBean rain;
         private List<WeatherBean> weather;
 
+        ListBean() {
+        }
+
         public int getDt() {
             return dt;
         }

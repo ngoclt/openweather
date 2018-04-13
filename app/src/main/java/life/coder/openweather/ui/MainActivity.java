@@ -28,6 +28,7 @@ import java.text.DecimalFormatSymbols;
 import life.coder.openweather.R;
 import life.coder.openweather.api.model.OWCity;
 import life.coder.openweather.utils.OWCallback;
+import life.coder.openweather.utils.OWHelper;
 
 import static android.content.pm.PackageManager.PERMISSION_DENIED;
 
@@ -121,38 +122,17 @@ public class MainActivity extends AppCompatActivity implements OWCallback, Obser
         setPressure(Integer.toString(owCityWeather.getMain().getPressure()));
         setVisibility(Integer.toString(owCityWeather.getVisibility()));
         setContainer(owCityWeather.getMain().getTemp());
-        setWeatherIcon(owCityWeather.getWeather().get(0).getId());
+        setWeatherIcon(owCityWeather.getWeather().get(0).getId(), sunRise, sunSet);
+    }
+
+    private void setWeatherIcon(int id, long sunRise, long sunSet) {
+        tvWeatherIcon.setText(OWHelper.getWeatherIcon(id, this, sunRise, sunSet));
     }
 
     private void setContainer(Double temp) {
-
-        switch ((int) Math.round(temp / 10)) {
-            case -3:
-                ltMainContainer.setBackgroundColor(getResources().getColor(R.color.extremelyCold));
-                break;
-            case -2:
-                ltMainContainer.setBackgroundColor(getResources().getColor(R.color.veryCold));
-                break;
-            case -1:
-                ltMainContainer.setBackgroundColor(getResources().getColor(R.color.normalCold));
-                break;
-            case 0:
-                ltMainContainer.setBackgroundColor(getResources().getColor(R.color.justCold));
-                break;
-            case 1:
-                ltMainContainer.setBackgroundColor(getResources().getColor(R.color.normal));
-                break;
-            case 2:
-                ltMainContainer.setBackgroundColor(getResources().getColor(R.color.warm));
-                break;
-            case 3:
-                ltMainContainer.setBackgroundColor(getResources().getColor(R.color.hot));
-                break;
-            default:
-                break;
-        }
-
+        ltMainContainer.setBackgroundColor(OWHelper.getTempColor(temp, this));
     }
+
 
     private void setCityName(String cityName) {
         tvCityName.setText(cityName);
@@ -178,64 +158,6 @@ public class MainActivity extends AppCompatActivity implements OWCallback, Obser
         tvVisibility.setText(visibility);
     }
 
-    private void setWeatherIcon(int id) {
-        long currentTime = System.currentTimeMillis();
-        if (currentTime > sunRise && currentTime < sunSet) {
-            switch (id / 100) {
-                case 2:
-                    tvWeatherIcon.setText(getString(R.string.ThunderStorm_day));
-                    break;
-                case 3:
-                    tvWeatherIcon.setText(getString(R.string.Drizzle_day));
-                    break;
-                case 5:
-                    tvWeatherIcon.setText(getString(R.string.Rain_day));
-                    break;
-                case 6:
-                    tvWeatherIcon.setText(getString(R.string.Snow_day));
-                    break;
-                case 7:
-                    tvWeatherIcon.setText(getString(R.string.Atmosphere));
-                    break;
-                case 8:
-                    if (id == 800) {
-                        tvWeatherIcon.setText(getString(R.string.Clear_day));
-                    } else {
-                        tvWeatherIcon.setText(getString(R.string.Cloudy_day));
-                    }
-                    break;
-                default:
-                    break;
-            }
-        } else {
-            switch (id / 100) {
-                case 2:
-                    tvWeatherIcon.setText(getString(R.string.ThunderStorm_night));
-                    break;
-                case 3:
-                    tvWeatherIcon.setText(getString(R.string.Drizzle_night));
-                    break;
-                case 5:
-                    tvWeatherIcon.setText(getString(R.string.Rain_night));
-                    break;
-                case 6:
-                    tvWeatherIcon.setText(getString(R.string.Snow_night));
-                    break;
-                case 7:
-                    tvWeatherIcon.setText(getString(R.string.Atmosphere));
-                    break;
-                case 8:
-                    if (id == 800) {
-                        tvWeatherIcon.setText(getString(R.string.Clear_night));
-                    } else {
-                        tvWeatherIcon.setText(getString(R.string.Cloudy_night));
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
 
     private void getLatlong(OWCallback callback) {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
@@ -298,7 +220,6 @@ public class MainActivity extends AppCompatActivity implements OWCallback, Obser
     @Override
     public void onSuccess() {
         displayContent();
-
     }
 
     @Override
