@@ -1,3 +1,24 @@
 <resources>
     <string name="app_name">openweather</string>
+    <string name="thermometer"></string>
+    <string name="humidity"></string>
+    <string name="barometer"></string>
+    <string name="binocular"></string>
+    <string name="ThunderStorm_day"></string>
+    <string name="Drizzle_day"></string>
+    <string name="Rain_day"></string>
+    <string name="Snow_day"></string>
+    <string name="Atmosphere"></string>
+    <string name="Clear_day"></string>
+    <string name="Cloudy_day"></string>
+    <string name="ThunderStorm_night"></string>
+    <string name="Drizzle_night"></string>
+    <string name="Rain_night"></string>
+    <string name="Snow_night"></string>
+    <string name="Clear_night"></string>
+    <string name="Cloudy_night"></string>
+    <string name="Celcius">℃</string>
+    <string name="Permission_denied">We need location permission to get your current weather :(</string>
+    <string name="refresh"></string>
+    <string name="No_location">No location found</string>
 </resources>
