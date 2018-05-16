@@ -3,5 +3,6 @@
     <array name="preloaded_fonts" translatable="false">
         <item>@font/avenir_ltstd_light</item>
         <item>@font/avenir_ltstd_roman</item>
+        <item>@font/weathericons</item>
     </array>
 </resources>

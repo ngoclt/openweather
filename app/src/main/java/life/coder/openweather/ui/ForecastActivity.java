@@ -9,6 +9,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ import life.coder.openweather.utils.OWCallback;
 
 public class ForecastActivity extends AppCompatActivity implements OWCallback, Observer<OWForecast> {
 
+    private LinearLayout ltMainContainer;
     String longitude, latitude;
     ForecastActivityViewModel viewModel;
     RecyclerView rcForecast;
@@ -33,6 +35,8 @@ public class ForecastActivity extends AppCompatActivity implements OWCallback, O
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.forecast);
+
+        ltMainContainer = findViewById(R.id.lt_main_container);
 
         rcForecast = findViewById(R.id.rc_forecast);
         ltRefresh = findViewById(R.id.lt_refresh);
