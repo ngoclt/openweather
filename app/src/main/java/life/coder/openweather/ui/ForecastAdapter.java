@@ -12,7 +12,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import life.coder.openweather.R;
-import life.coder.openweather.api.model.OWForecast;
+import life.coder.openweather.api.model.OWCityWeather;
 import life.coder.openweather.utils.OWHelper;
 
 /**
@@ -20,19 +20,19 @@ import life.coder.openweather.utils.OWHelper;
  */
 public class ForecastAdapter extends RecyclerView.Adapter<ForecastViewHolder> {
 
-    private List<OWForecast.ListBean> data;
+    private List<OWCityWeather> data;
     private Context context;
     private long sunset = 0;
     private long sunrise = 0;
 
-    ForecastAdapter(List<OWForecast.ListBean> data, Context context, long sunrise, long sunset) {
+    ForecastAdapter(List<OWCityWeather> data, Context context, long sunrise, long sunset) {
         this.data = data;
         this.context = context;
         this.sunrise = sunrise;
         this.sunset = sunset;
     }
 
-    public void setData(List<OWForecast.ListBean> data) {
+    public void setData(List<OWCityWeather> data) {
         this.data = data;
     }
 
@@ -46,7 +46,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ForecastViewHolder holder, int position) {
-        OWForecast.ListBean item = data.get(position);
+        OWCityWeather item = data.get(position);
         String icon = OWHelper.getWeatherIcon(item.getWeather().get(0).getId(), context, sunrise, sunset);
         int backGroundColor = OWHelper.getTempColor(item.getMain().getTemp(), context);
         holder.bindItem(item, icon, backGroundColor);
@@ -73,9 +73,9 @@ class ForecastViewHolder extends RecyclerView.ViewHolder {
 
     }
 
-    public void bindItem(OWForecast.ListBean item, String icon, int backGroundColor) {
+    public void bindItem(OWCityWeather item, String icon, int backGroundColor) {
         ctContainer.setBackgroundColor(backGroundColor);
-        tvForecastDate.setText(OWHelper.convertDateTime(item.getDt_txt()));
+        tvForecastDate.setText(OWHelper.convertDateTime(item.getDate()));
         tvForecastIcon.setText(icon);
         tvForecastTemp.setText(String.valueOf(item.getMain().getTemp()));
     }

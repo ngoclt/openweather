@@ -9,12 +9,14 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import life.coder.openweather.R;
+import life.coder.openweather.api.model.OWCityWeather;
 import life.coder.openweather.api.model.OWForecast;
 import life.coder.openweather.utils.OWCallback;
 
@@ -79,7 +81,7 @@ public class ForecastActivity extends AppCompatActivity implements OWCallback, O
                 });
     }
 
-    private void setInfo(List<OWForecast.ListBean> owForecastList) {
+    private void setInfo(List<OWCityWeather> owForecastList) {
         adapter.setData(owForecastList);
         adapter.notifyDataSetChanged();
     }
@@ -91,6 +93,7 @@ public class ForecastActivity extends AppCompatActivity implements OWCallback, O
 
     @Override
     public void onFailure(@Nullable String error) {
+        Log.e("NickHapper", error);
     }
 
     @Override

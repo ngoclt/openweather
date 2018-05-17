@@ -22,13 +22,13 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
 import life.coder.openweather.R;
-import life.coder.openweather.api.model.OWCity;
+import life.coder.openweather.api.model.OWCityWeather;
 import life.coder.openweather.utils.OWCallback;
 import life.coder.openweather.utils.OWHelper;
 
 import static android.content.pm.PackageManager.PERMISSION_DENIED;
 
-public class MainActivity extends AppCompatActivity implements OWCallback, Observer<OWCity> {
+public class MainActivity extends AppCompatActivity implements OWCallback, Observer<OWCityWeather> {
 
     private static final int PERMISSION_REQUEST = 555;
     private TextView tvWeather, tvCityName,
@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements OWCallback, Obser
                 });
     }
 
-    private void setInfo(OWCity owCityWeather) {
+    private void setInfo(OWCityWeather owCityWeather) {
         sunset = owCityWeather.getSys().getSunset();
         sunrise = owCityWeather.getSys().getSunrise();
 
@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements OWCallback, Obser
         setWeatherCondition(description);
 
         setTemperature(Integer.toString(owCityWeather.getMain().getTemp().intValue()));
-        setHumidity(Integer.toString(owCityWeather.getMain().getHumidity()));
+        setHumidity(Integer.toString(owCityWeather.getMain().getHumidity().intValue()));
 
         String minTemp = Integer.toString(owCityWeather.getMain().getTempMin().intValue());
         String maxTemp = Integer.toString(owCityWeather.getMain().getTempMax().intValue());
@@ -203,9 +203,9 @@ public class MainActivity extends AppCompatActivity implements OWCallback, Obser
     }
 
     @Override
-    public void onChanged(@Nullable OWCity owCity) {
-        if (owCity != null) {
-            setInfo(owCity);
+    public void onChanged(@Nullable OWCityWeather owCityWeather) {
+        if (owCityWeather != null) {
+            setInfo(owCityWeather);
         }
     }
 }

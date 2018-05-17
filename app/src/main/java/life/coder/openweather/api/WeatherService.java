@@ -1,6 +1,6 @@
 package life.coder.openweather.api;
 
-import life.coder.openweather.api.model.OWCity;
+import life.coder.openweather.api.model.OWCityWeather;
 import life.coder.openweather.api.model.OWForecast;
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -13,7 +13,7 @@ import retrofit2.http.Query;
 public interface WeatherService {
 
     @GET("weather")
-    Call<OWCity> getDayWeather(
+    Call<OWCityWeather> getDayWeather(
             @Query("lat") String lat,
             @Query("lon") String lon);
 

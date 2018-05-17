@@ -5,7 +5,7 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 
-import life.coder.openweather.api.model.OWCity;
+import life.coder.openweather.api.model.OWCityWeather;
 import life.coder.openweather.repository.OWRepository;
 import life.coder.openweather.utils.OWCallback;
 
@@ -19,7 +19,7 @@ public class MainActivityViewModel extends AndroidViewModel {
         super(application);
     }
 
-    LiveData<OWCity> getOwCityWeatherLiveData(String lat, String lon, OWCallback callback) {
+    LiveData<OWCityWeather> getOwCityWeatherLiveData(String lat, String lon, OWCallback callback) {
         return OWRepository.getInstance().getOWCityWeather(lat, lon, callback);
     }
 

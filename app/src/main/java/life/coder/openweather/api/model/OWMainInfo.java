@@ -5,21 +5,21 @@ package life.coder.openweather.api.model;
  */
 
 public class OWMainInfo {
-    private Double temp;
-    private int humidity;
-    private int pressure;
+    private Float temp;
+    private Float humidity;
+    private Float pressure;
     private Float temp_min;
     private Float temp_max;
 
-    public Double getTemp() {
+    public Float getTemp() {
         return temp;
     }
 
-    public int getHumidity() {
+    public Float getHumidity() {
         return humidity;
     }
 
-    public int getPressure() {
+    public Float getPressure() {
         return pressure;
     }
 

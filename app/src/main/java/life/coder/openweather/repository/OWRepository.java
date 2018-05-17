@@ -6,7 +6,7 @@ import android.arch.lifecycle.MutableLiveData;
 import javax.inject.Inject;
 
 import life.coder.openweather.api.WeatherService;
-import life.coder.openweather.api.model.OWCity;
+import life.coder.openweather.api.model.OWCityWeather;
 import life.coder.openweather.api.model.OWForecast;
 import life.coder.openweather.di.component.DaggerNetComponent;
 import life.coder.openweather.di.module.NetModule;
@@ -42,13 +42,13 @@ public class OWRepository {
         return _instance;
     }
 
-    public LiveData<OWCity> getOWCityWeather(String lat, String lon, OWCallback callback) {
-        final MutableLiveData<OWCity> data = new MutableLiveData<>();
+    public LiveData<OWCityWeather> getOWCityWeather(String lat, String lon, OWCallback callback) {
+        final MutableLiveData<OWCityWeather> data = new MutableLiveData<>();
 
         weatherService.getDayWeather(lat, lon)
-                .enqueue(new Callback<OWCity>() {
+                .enqueue(new Callback<OWCityWeather>() {
                     @Override
-                    public void onResponse(Call<OWCity> call, Response<OWCity> response) {
+                    public void onResponse(Call<OWCityWeather> call, Response<OWCityWeather> response) {
                         if (response.isSuccessful()) {
                             data.postValue(response.body());
                             callback.onSuccess();
@@ -56,8 +56,8 @@ public class OWRepository {
                     }
 
                     @Override
-                    public void onFailure(Call<OWCity> call, Throwable t) {
-                        callback.onFailure(t.toString());
+                    public void onFailure(Call<OWCityWeather> call, Throwable t) {
+                        callback.onFailure(t.getLocalizedMessage());
                     }
                 });
         return data;
@@ -78,7 +78,7 @@ public class OWRepository {
 
                     @Override
                     public void onFailure(Call<OWForecast> call, Throwable t) {
-                        callback.onFailure(null);
+                        callback.onFailure(t.getLocalizedMessage());
                     }
                 });
         return data;

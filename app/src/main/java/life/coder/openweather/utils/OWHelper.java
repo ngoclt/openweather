@@ -12,16 +12,9 @@ import life.coder.openweather.R;
  */
 public class OWHelper {
 
-    public static String convertDateTime(String date) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
-        Date testDate = null;
-        try {
-            testDate = sdf.parse(date);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+    public static String convertDateTime(Date date) {
         SimpleDateFormat formatter = new SimpleDateFormat("E',' MMM dd kk:mm");
-        return formatter.format(testDate);
+        return formatter.format(date);
     }
 
     public static String getCapSentences(String original) {
@@ -94,7 +87,7 @@ public class OWHelper {
         }
     }
 
-    public static int getTempColor(Double temp, Context context) {
+    public static int getTempColor(float temp, Context context) {
 
         switch ((int) Math.round(temp / 10)) {
             case -3:
