@@ -13,6 +13,7 @@ public class OWCity {
     private String country;
     private List<OWWeather> weather;
     private OWMainInfo main;
+    private OWWind wind;
     private int visibility;
     private OWSys sys;
 
@@ -26,6 +27,10 @@ public class OWCity {
 
     public List<OWWeather> getWeather() {
         return weather;
+    }
+
+    public OWWind getWind() {
+        return wind;
     }
 
     public int getVisibility() {

@@ -15,9 +15,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.RotateAnimation;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -36,18 +33,17 @@ public class MainActivity extends AppCompatActivity implements OWCallback, Obser
     private static final int PERMISSION_REQUEST = 555;
     private TextView tvWeather, tvCityName,
             tvTemperature, tvHumidity,
-            tvPressure, tvVisibility,
-            tvWeatherIcon, tvNoPermission;
+            tvThermometer, tvWind,
+            tvWeatherIcon;
 
     private LinearLayout ltMainContainer;
 
     private long sunSet = 0;
     private long sunRise = 0;
 
-    String longitude, latitude;
+    String longitude = "24.9488344", latitude = "60.1864416";
     DecimalFormat df;
     DecimalFormatSymbols sym;
-    Animation refreshAnim;
     MainActivityViewModel viewModel;
 
     @Override
@@ -59,21 +55,15 @@ public class MainActivity extends AppCompatActivity implements OWCallback, Obser
         sym = DecimalFormatSymbols.getInstance();
         sym.setDecimalSeparator(',');
         df.setDecimalFormatSymbols(sym);
-        refreshAnim = new RotateAnimation(0.0f, 360.0f,
-                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
-                0.5f);
-        refreshAnim.setRepeatCount(-1);
-        refreshAnim.setDuration(1000);
 
         ltMainContainer = findViewById(R.id.lt_main_container);
         tvCityName = findViewById(R.id.tv_city_name);
         tvWeather = findViewById(R.id.tv_weather_description);
         tvTemperature = findViewById(R.id.tv_temperature_main);
         tvHumidity = findViewById(R.id.tv_humidity);
-        tvPressure = findViewById(R.id.tv_pressure);
-        tvVisibility = findViewById(R.id.tv_visibility);
+        tvThermometer = findViewById(R.id.tv_thermometer);
+        tvWind = findViewById(R.id.tv_wind);
         tvWeatherIcon = findViewById(R.id.tv_weather_icon);
-        tvNoPermission = findViewById(R.id.tv_no_permission);
 
         ltMainContainer.setOnClickListener(view -> {
             goToForeCast();
@@ -109,12 +99,18 @@ public class MainActivity extends AppCompatActivity implements OWCallback, Obser
         sunRise = owCityWeather.getSys().getSunrise();
 
         setCityName(owCityWeather.getName());
+
         String description = OWHelper.getCapSentences(owCityWeather.getWeather().get(0).getDescription());
         setWeatherCondition(description);
+
         setTemperature(Integer.toString(owCityWeather.getMain().getTemp().intValue()));
         setHumidity(Integer.toString(owCityWeather.getMain().getHumidity()));
-        setPressure(Integer.toString(owCityWeather.getMain().getPressure()));
-        setVisibility(Integer.toString(owCityWeather.getVisibility()));
+
+        String minTemp = Integer.toString(owCityWeather.getMain().getTempMin().intValue());
+        String maxTemp = Integer.toString(owCityWeather.getMain().getTempMax().intValue());
+        setThermometer(minTemp.concat("/").concat(maxTemp));
+
+        setWind(Float.toString(owCityWeather.getWind().getSpeed()).concat(" mps"));
         setContainer(sunRise, sunSet);
         setWeatherIcon(owCityWeather.getWeather().get(0).getId(), sunRise, sunSet);
 
@@ -147,12 +143,12 @@ public class MainActivity extends AppCompatActivity implements OWCallback, Obser
         tvHumidity.setText(humidity);
     }
 
-    private void setPressure(String pressure) {
-        tvPressure.setText(pressure);
+    private void setThermometer(String thermometer) {
+        tvThermometer.setText(thermometer);
     }
 
-    private void setVisibility(String visibility) {
-        tvVisibility.setText(visibility);
+    private void setWind(String wind) {
+        tvWind.setText(wind);
     }
 
 
@@ -168,15 +164,14 @@ public class MainActivity extends AppCompatActivity implements OWCallback, Obser
                 if (location != null) {
                     setLatitude(df.format(location.getLatitude()));
                     setLongitude(df.format(location.getLongitude()));
-                    observeViewModel(viewModel);
+                    callback.onSuccess();
                 } else {
                     callback.onFailure(getString(R.string.no_location));
-                    return;
                 }
-                callback.onSuccess();
             } else {
                 callback.onFailure(getString(R.string.no_location));
             }
+            observeViewModel(viewModel);
         }
     }
 
@@ -185,7 +180,6 @@ public class MainActivity extends AppCompatActivity implements OWCallback, Obser
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         for (int grantResult : grantResults) {
             if (grantResult == PERMISSION_DENIED) {
-                displayNoPermission(getString(R.string.permission_denied));
                 return;
             }
         }
@@ -200,25 +194,12 @@ public class MainActivity extends AppCompatActivity implements OWCallback, Obser
         this.longitude = longitude;
     }
 
-    private void displayContent() {
-        ltMainContainer.setVisibility(View.VISIBLE);
-        tvNoPermission.setVisibility(View.GONE);
-    }
-
-    private void displayNoPermission(String error) {
-        ltMainContainer.setVisibility(View.GONE);
-        tvNoPermission.setVisibility(View.VISIBLE);
-        tvNoPermission.setText(error);
-    }
-
     @Override
     public void onSuccess() {
-        displayContent();
     }
 
     @Override
     public void onFailure(@Nullable String error) {
-        displayNoPermission(error);
     }
 
     @Override
