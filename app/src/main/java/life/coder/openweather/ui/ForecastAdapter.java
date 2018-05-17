@@ -22,14 +22,14 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastViewHolder> {
 
     private List<OWForecast.ListBean> data;
     private Context context;
-    private long sunSet = 0;
-    private long sunRise = 0;
+    private long sunset = 0;
+    private long sunrise = 0;
 
-    ForecastAdapter(List<OWForecast.ListBean> data, Context context, long sunRise, long sunSet) {
+    ForecastAdapter(List<OWForecast.ListBean> data, Context context, long sunrise, long sunset) {
         this.data = data;
         this.context = context;
-        this.sunRise = sunRise;
-        this.sunSet = sunSet;
+        this.sunrise = sunrise;
+        this.sunset = sunset;
     }
 
     public void setData(List<OWForecast.ListBean> data) {
@@ -47,7 +47,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ForecastViewHolder holder, int position) {
         OWForecast.ListBean item = data.get(position);
-        String icon = OWHelper.getWeatherIcon(item.getWeather().get(0).getId(), context, sunRise, sunSet);
+        String icon = OWHelper.getWeatherIcon(item.getWeather().get(0).getId(), context, sunrise, sunset);
         int backGroundColor = OWHelper.getTempColor(item.getMain().getTemp(), context);
         holder.bindItem(item, icon, backGroundColor);
     }

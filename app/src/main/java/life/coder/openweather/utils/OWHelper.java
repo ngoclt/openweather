@@ -31,24 +31,25 @@ public class OWHelper {
         return original.substring(0, 1).toUpperCase() + original.substring(1);
     }
 
-    public static int getBackground(long sunSet, long sunRise) {
-        long currentTime = System.currentTimeMillis();
-        long deltaTime = 2 * 60 * 60 * 1000; // 2 hours in millisecond
+    public static int getBackground(long sunrise, long sunset) {
 
-        if (currentTime >= sunRise - deltaTime && currentTime < sunRise + deltaTime) {
+        long currentTime = System.currentTimeMillis() / 1000; // in seconds
+        long deltaTime = 2 * 60 * 60; // 2 hours in seconds
+
+        if (currentTime >= sunrise - deltaTime && currentTime < sunrise + deltaTime) {
             return R.drawable.bg_morning;
-        } else if (currentTime >= sunRise + deltaTime && currentTime < sunSet - deltaTime) {
+        } else if (currentTime >= sunrise + deltaTime && currentTime < sunset - deltaTime) {
             return R.drawable.bg_day;
-        } else if (currentTime >= sunSet - deltaTime && currentTime < sunSet + deltaTime) {
+        } else if (currentTime >= sunset - deltaTime && currentTime < sunset + deltaTime) {
             return R.drawable.bg_evening;
         }
 
         return R.drawable.bg_night;
     }
 
-    public static String getWeatherIcon(int id, Context context, long sunSet, long sunRise) {
-        long currentTime = System.currentTimeMillis();
-        if (currentTime > sunRise && currentTime < sunSet) {
+    public static String getWeatherIcon(int id, Context context, long sunrise, long sunset) {
+        long currentTime = System.currentTimeMillis() / 1000; // in seconds
+        if (currentTime >= sunrise && currentTime < sunset) {
             switch (id / 100) {
                 case 2:
                     return context.getString(R.string.thunder_storm_day);

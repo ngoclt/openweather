@@ -38,8 +38,8 @@ public class MainActivity extends AppCompatActivity implements OWCallback, Obser
 
     private LinearLayout ltMainContainer;
 
-    private long sunSet = 0;
-    private long sunRise = 0;
+    private long sunset = 0;
+    private long sunrise = 0;
 
     String longitude = "24.9488344", latitude = "60.1864416";
     DecimalFormat df;
@@ -95,8 +95,8 @@ public class MainActivity extends AppCompatActivity implements OWCallback, Obser
     }
 
     private void setInfo(OWCity owCityWeather) {
-        sunSet = owCityWeather.getSys().getSunset();
-        sunRise = owCityWeather.getSys().getSunrise();
+        sunset = owCityWeather.getSys().getSunset();
+        sunrise = owCityWeather.getSys().getSunrise();
 
         setCityName(owCityWeather.getName());
 
@@ -111,14 +111,14 @@ public class MainActivity extends AppCompatActivity implements OWCallback, Obser
         setThermometer(minTemp.concat("/").concat(maxTemp));
 
         setWind(Float.toString(owCityWeather.getWind().getSpeed()).concat(" mps"));
-        setContainer(sunRise, sunSet);
-        setWeatherIcon(owCityWeather.getWeather().get(0).getId(), sunRise, sunSet);
+        setContainer(sunrise, sunset);
+        setWeatherIcon(owCityWeather.getWeather().get(0).getId(), sunrise, sunset);
 
 
     }
 
-    private void setWeatherIcon(int id, long sunRise, long sunSet) {
-        tvWeatherIcon.setText(OWHelper.getWeatherIcon(id, this, sunRise, sunSet));
+    private void setWeatherIcon(int id, long sunrise, long sunset) {
+        tvWeatherIcon.setText(OWHelper.getWeatherIcon(id, this, sunrise, sunset));
     }
 
     private void setContainer(long sunRise, long sunSet) {
