@@ -1,4 +1,4 @@
-package life.coder.openweather.ui;
+package life.coder.openweather.ui.main;
 
 import android.content.Context;
 import android.graphics.Color;

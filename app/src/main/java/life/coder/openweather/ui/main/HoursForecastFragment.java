@@ -1,4 +1,4 @@
-package life.coder.openweather.ui;
+package life.coder.openweather.ui.main;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -24,7 +24,7 @@ public class HoursForecastFragment extends Fragment implements OWCallback, Obser
     private String longitude, latitude;
     private long sunrise, sunset;
 
-    private ForecastActivityViewModel viewModel;
+    private HoursForecastViewModel viewModel;
     private HoursForecastAdapter adapter;
 
     private RecyclerView rcForecast;
@@ -56,12 +56,12 @@ public class HoursForecastFragment extends Fragment implements OWCallback, Obser
     public void onResume() {
         super.onResume();
 
-        viewModel = ViewModelProviders.of(this).get(ForecastActivityViewModel.class);
+        viewModel = ViewModelProviders.of(this).get(HoursForecastViewModel.class);
         observeViewModel(viewModel);
     }
 
 
-    private void observeViewModel(ForecastActivityViewModel viewModel) {
+    private void observeViewModel(HoursForecastViewModel viewModel) {
 
         viewModel.getOwForeCastLiveData(latitude, longitude, 40, this).observe(this,
                 owForecast -> {

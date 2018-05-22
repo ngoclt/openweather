@@ -1,4 +1,4 @@
-package life.coder.openweather.ui;
+package life.coder.openweather.ui.main;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -23,6 +23,7 @@ import java.text.DecimalFormatSymbols;
 
 import life.coder.openweather.R;
 import life.coder.openweather.api.model.OWCityWeather;
+import life.coder.openweather.ui.ForecastActivity;
 import life.coder.openweather.utils.OWCallback;
 import life.coder.openweather.utils.OWHelper;
 
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements OWCallback, Obser
     String longitude = "24.9488344", latitude = "60.1864416";
     DecimalFormat df;
     DecimalFormatSymbols sym;
-    MainActivityViewModel viewModel;
+    MainViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements OWCallback, Obser
             openForecastActivity();
         });
 
-        viewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
+        viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
     }
 
     @Override
@@ -114,15 +115,13 @@ public class MainActivity extends AppCompatActivity implements OWCallback, Obser
         }
     }
 
-    private void observeViewModel(MainActivityViewModel viewModel) {
+    private void observeViewModel(MainViewModel viewModel) {
         viewModel.getOwCityWeatherLiveData(latitude, longitude, this)
                 .observe(this, owCityWeather -> {
                     if (owCityWeather != null) {
                         updateUI(owCityWeather);
                     }
                 });
-
-        viewModel.getOwForeCastLiveData(latitude, longitude, 5, this);
     }
 
     @Override
