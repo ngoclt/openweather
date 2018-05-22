@@ -56,7 +56,7 @@ public class ForecastActivity extends AppCompatActivity implements OWCallback, O
         rcForecast.setAdapter(adapter);
 
         ltRefresh.setOnRefreshListener(() ->
-                viewModel.getOwForeCastLiveData(latitude, longitude, this));
+                viewModel.getOwForeCastLiveData(latitude, longitude, 40, this));
     }
 
     @Override
@@ -73,7 +73,7 @@ public class ForecastActivity extends AppCompatActivity implements OWCallback, O
 
     private void observeViewModel(ForecastActivityViewModel viewModel) {
 
-        viewModel.getOwForeCastLiveData(latitude, longitude, this).observe(this,
+        viewModel.getOwForeCastLiveData(latitude, longitude, 0, this).observe(this,
                 owForecast -> {
                     if (owForecast != null) {
                         setInfo(owForecast.getList());

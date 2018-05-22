@@ -63,10 +63,10 @@ public class OWRepository {
         return data;
     }
 
-    public LiveData<OWForecast> getOWForeCast(String lat, String lon, OWCallback callback) {
+    public LiveData<OWForecast> getOWForeCast(String lat, String lon, int limit, OWCallback callback) {
         final MutableLiveData<OWForecast> data = new MutableLiveData<>();
 
-        weatherService.getForeCast(lat, lon)
+        weatherService.getForeCast(lat, lon, limit)
                 .enqueue(new Callback<OWForecast>() {
                     @Override
                     public void onResponse(Call<OWForecast> call, Response<OWForecast> response) {

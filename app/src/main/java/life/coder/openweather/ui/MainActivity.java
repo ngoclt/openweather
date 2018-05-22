@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements OWCallback, Obser
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.overview);
+        setContentView(R.layout.main_activity);
 
         df = new DecimalFormat("#.#####");
         sym = DecimalFormatSymbols.getInstance();
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements OWCallback, Obser
         tvWeatherIcon = findViewById(R.id.tv_weather_icon);
 
         ltMainContainer.setOnClickListener(view -> {
-            goToForeCast();
+            openForecastActivity();
         });
 
         viewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
@@ -75,104 +75,7 @@ public class MainActivity extends AppCompatActivity implements OWCallback, Obser
     @Override
     protected void onResume() {
         super.onResume();
-        getLatlong(this);
-    }
-
-    private void goToForeCast() {
-        Intent foreCastIntent = new Intent(this, ForecastActivity.class);
-        foreCastIntent.putExtra("lat", latitude);
-        foreCastIntent.putExtra("lon", longitude);
-        startActivity(foreCastIntent);
-    }
-
-    private void observeViewModel(MainActivityViewModel viewModel) {
-        viewModel.getOwCityWeatherLiveData(latitude, longitude, this)
-                .observe(this, owCityWeather -> {
-                    if (owCityWeather != null) {
-                        setInfo(owCityWeather);
-                    }
-                });
-    }
-
-    private void setInfo(OWCityWeather owCityWeather) {
-        sunset = owCityWeather.getSys().getSunset();
-        sunrise = owCityWeather.getSys().getSunrise();
-
-        setCityName(owCityWeather.getName());
-
-        String description = OWHelper.getCapSentences(owCityWeather.getWeather().get(0).getDescription());
-        setWeatherCondition(description);
-
-        setTemperature(Integer.toString(owCityWeather.getMain().getTemp().intValue()));
-        setHumidity(Integer.toString(owCityWeather.getMain().getHumidity().intValue()));
-
-        String minTemp = Integer.toString(owCityWeather.getMain().getTempMin().intValue());
-        String maxTemp = Integer.toString(owCityWeather.getMain().getTempMax().intValue());
-        setThermometer(minTemp.concat("/").concat(maxTemp));
-
-        setWind(Float.toString(owCityWeather.getWind().getSpeed()).concat(" mps"));
-        setContainer(sunrise, sunset);
-        setWeatherIcon(owCityWeather.getWeather().get(0).getId(), sunrise, sunset);
-
-
-    }
-
-    private void setWeatherIcon(int id, long sunrise, long sunset) {
-        tvWeatherIcon.setText(OWHelper.getWeatherIcon(id, this, sunrise, sunset));
-    }
-
-    private void setContainer(long sunRise, long sunSet) {
-        int backgroundId = OWHelper.getBackground(sunRise, sunSet);
-        ltMainContainer.setBackgroundResource(backgroundId);
-    }
-
-
-    private void setCityName(String cityName) {
-        tvCityName.setText(cityName);
-    }
-
-    private void setWeatherCondition(String weatherCondition) {
-        tvWeather.setText(weatherCondition);
-    }
-
-    private void setTemperature(String temperature) {
-        tvTemperature.setText(temperature);
-    }
-
-    private void setHumidity(String humidity) {
-        tvHumidity.setText(humidity);
-    }
-
-    private void setThermometer(String thermometer) {
-        tvThermometer.setText(thermometer);
-    }
-
-    private void setWind(String wind) {
-        tvWind.setText(wind);
-    }
-
-
-    private void getLatlong(OWCallback callback) {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            String[] permissionsNeeded = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
-            ActivityCompat.requestPermissions(this, permissionsNeeded, PERMISSION_REQUEST);
-        } else {
-            LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            if (lm != null) {
-                Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                if (location != null) {
-                    setLatitude(df.format(location.getLatitude()));
-                    setLongitude(df.format(location.getLongitude()));
-                    callback.onSuccess();
-                } else {
-                    callback.onFailure(getString(R.string.no_location));
-                }
-            } else {
-                callback.onFailure(getString(R.string.no_location));
-            }
-            observeViewModel(viewModel);
-        }
+        getGPSLocation(this);
     }
 
     @SuppressLint("MissingPermission")
@@ -183,15 +86,43 @@ public class MainActivity extends AppCompatActivity implements OWCallback, Obser
                 return;
             }
         }
-        getLatlong(this);
+        getGPSLocation(this);
     }
 
-    public void setLatitude(String latitude) {
-        this.latitude = latitude;
+    private void getGPSLocation(OWCallback callback) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            String[] permissionsNeeded = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
+            ActivityCompat.requestPermissions(this, permissionsNeeded, PERMISSION_REQUEST);
+        } else {
+            LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+            if (lm != null) {
+                Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                if (location != null) {
+                    this.latitude = df.format(location.getLatitude());
+                    this.longitude = df.format(location.getLongitude());
+                    callback.onSuccess();
+                } else {
+                    callback.onFailure(getString(R.string.no_location));
+                }
+            } else {
+                callback.onFailure(getString(R.string.no_location));
+            }
+
+            observeViewModel(viewModel);
+        }
     }
 
-    public void setLongitude(String longitude) {
-        this.longitude = longitude;
+    private void observeViewModel(MainActivityViewModel viewModel) {
+        viewModel.getOwCityWeatherLiveData(latitude, longitude, this)
+                .observe(this, owCityWeather -> {
+                    if (owCityWeather != null) {
+                        updateUI(owCityWeather);
+                    }
+                });
+
+        viewModel.getOwForeCastLiveData(latitude, longitude, 5, this);
     }
 
     @Override
@@ -205,7 +136,56 @@ public class MainActivity extends AppCompatActivity implements OWCallback, Obser
     @Override
     public void onChanged(@Nullable OWCityWeather owCityWeather) {
         if (owCityWeather != null) {
-            setInfo(owCityWeather);
+            updateUI(owCityWeather);
         }
+    }
+
+    private void updateUI(OWCityWeather owCityWeather) {
+        sunset = owCityWeather.getSys().getSunset();
+        sunrise = owCityWeather.getSys().getSunrise();
+
+        int backgroundId = OWHelper.getBackground(sunrise, sunset);
+        ltMainContainer.setBackgroundResource(backgroundId);
+
+        tvCityName.setText(owCityWeather.getName());
+
+        if (owCityWeather.getWeather().size() > 0) {
+            String description = OWHelper.getCapSentences(owCityWeather.getWeather().get(0).getDescription());
+            tvWeather.setText(description);
+            tvWeatherIcon.setText(OWHelper.getWeatherIcon(owCityWeather.getWeather().get(0).getId(), this, sunrise, sunset));
+        } else {
+            tvWeather.setText("-");
+            tvWeatherIcon.setText("-");
+        }
+
+        tvTemperature.setText(Integer.toString(owCityWeather.getMain().getTemp().intValue()));
+        tvHumidity.setText(Integer.toString(owCityWeather.getMain().getHumidity().intValue()));
+
+        String minTemp = Integer.toString(owCityWeather.getMain().getTempMin().intValue());
+        String maxTemp = Integer.toString(owCityWeather.getMain().getTempMax().intValue());
+        tvThermometer.setText(minTemp.concat("/").concat(maxTemp));
+
+        tvWind.setText(Float.toString(owCityWeather.getWind().getSpeed()).concat(" mps"));
+
+        displayTodayForecastFragment();
+    }
+
+    private void displayTodayForecastFragment() {
+        HoursForecastFragment forecastFragment = new HoursForecastFragment();
+        Bundle bundle = new Bundle(4);
+        bundle.putString("longitude", longitude);
+        bundle.putString("latitude", latitude);
+        bundle.putLong("sunrise", sunrise);
+        bundle.putLong("sunset", sunset);
+
+        forecastFragment.setArguments(bundle);
+        getSupportFragmentManager().beginTransaction().add(R.id.ln_fragment_hours_forecast, forecastFragment).addToBackStack(null).commit();
+    }
+
+    private void openForecastActivity() {
+        Intent foreCastIntent = new Intent(this, ForecastActivity.class);
+        foreCastIntent.putExtra("lat", latitude);
+        foreCastIntent.putExtra("lon", longitude);
+        startActivity(foreCastIntent);
     }
 }

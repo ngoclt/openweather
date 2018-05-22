@@ -20,5 +20,6 @@ public interface WeatherService {
     @GET("forecast")
     Call<OWForecast> getForeCast(
             @Query("lat") String lat,
-            @Query("lon") String lon);
+            @Query("lon") String lon,
+            @Query("cnt") int limit);
 }

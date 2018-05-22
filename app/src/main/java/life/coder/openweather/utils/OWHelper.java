@@ -1,6 +1,7 @@
 package life.coder.openweather.utils;
 
 import android.content.Context;
+import android.graphics.Color;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -87,26 +88,14 @@ public class OWHelper {
         }
     }
 
-    public static int getTempColor(float temp, Context context) {
-
-        switch ((int) Math.round(temp / 10)) {
-            case -3:
-                return context.getResources().getColor(R.color.extremelyCold);
-            case -2:
-                return context.getResources().getColor(R.color.veryCold);
-            case -1:
-                return context.getResources().getColor(R.color.normalCold);
-            case 0:
-                return context.getResources().getColor(R.color.justCold);
-            case 1:
-                return context.getResources().getColor(R.color.normal);
-            case 2:
-                return context.getResources().getColor(R.color.warm);
-            case 3:
-                return context.getResources().getColor(R.color.hot);
-            default:
-                return 0;
-        }
-
+    public static int getColorWithAlpha(int color, float ratio) {
+        int newColor = 0;
+        int alpha = Math.round(Color.alpha(color) * ratio);
+        int r = Color.red(color);
+        int g = Color.green(color);
+        int b = Color.blue(color);
+        newColor = Color.argb(alpha, r, g, b);
+        return newColor;
     }
+
 }

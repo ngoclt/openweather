@@ -185,6 +185,12 @@
 
                 </LinearLayout>
             </LinearLayout>
+
+            <FrameLayout
+                android:id="@+id/ln_fragment_hours_forecast"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
         </LinearLayout>
 
     </LinearLayout>

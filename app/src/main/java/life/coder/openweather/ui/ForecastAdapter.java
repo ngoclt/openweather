@@ -18,7 +18,29 @@ import life.coder.openweather.utils.OWHelper;
 /**
  * Created by TheGayLord on 13/04/2018.
  */
-public class ForecastAdapter extends RecyclerView.Adapter<ForecastViewHolder> {
+public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastViewHolder> {
+
+    class ForecastViewHolder extends RecyclerView.ViewHolder {
+
+        private TextView tvForecastDate, tvForecastIcon, tvForecastTemp;
+        private ConstraintLayout ctContainer;
+
+        ForecastViewHolder(View itemView) {
+            super(itemView);
+
+            tvForecastDate = itemView.findViewById(R.id.tv_forecast_date);
+            tvForecastIcon = itemView.findViewById(R.id.tv_forecast_icon);
+            tvForecastTemp = itemView.findViewById(R.id.tv_forecast_temp);
+            ctContainer = itemView.findViewById(R.id.ct_container);
+
+        }
+
+        public void bindItem(OWCityWeather item, String icon) {
+            tvForecastDate.setText(OWHelper.convertDateTime(item.getDate()));
+            tvForecastIcon.setText(icon);
+            tvForecastTemp.setText(String.valueOf(item.getMain().getTemp()));
+        }
+    }
 
     private List<OWCityWeather> data;
     private Context context;
@@ -48,36 +70,12 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastViewHolder> {
     public void onBindViewHolder(@NonNull ForecastViewHolder holder, int position) {
         OWCityWeather item = data.get(position);
         String icon = OWHelper.getWeatherIcon(item.getWeather().get(0).getId(), context, sunrise, sunset);
-        int backGroundColor = OWHelper.getTempColor(item.getMain().getTemp(), context);
-        holder.bindItem(item, icon, backGroundColor);
+        holder.bindItem(item, icon);
     }
 
     @Override
     public int getItemCount() {
         return data.size();
-    }
-}
-
-class ForecastViewHolder extends RecyclerView.ViewHolder {
-
-    private TextView tvForecastDate, tvForecastIcon, tvForecastTemp;
-    private ConstraintLayout ctContainer;
-
-    ForecastViewHolder(View itemView) {
-        super(itemView);
-
-        tvForecastDate = itemView.findViewById(R.id.tv_forecast_date);
-        tvForecastIcon = itemView.findViewById(R.id.tv_forecast_icon);
-        tvForecastTemp = itemView.findViewById(R.id.tv_forecast_temp);
-        ctContainer = itemView.findViewById(R.id.ct_container);
-
-    }
-
-    public void bindItem(OWCityWeather item, String icon, int backGroundColor) {
-        ctContainer.setBackgroundColor(backGroundColor);
-        tvForecastDate.setText(OWHelper.convertDateTime(item.getDate()));
-        tvForecastIcon.setText(icon);
-        tvForecastTemp.setText(String.valueOf(item.getMain().getTemp()));
     }
 }
 

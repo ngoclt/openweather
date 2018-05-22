@@ -53,6 +53,6 @@ public class OWCityWeather {
     // Custom methods
 
     public Date getDate() {
-        return new Date(dt);
+        return new Date(dt * 1000);
     }
 }
