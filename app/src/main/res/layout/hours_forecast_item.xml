@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="120dp"
-    android:layout_height="160dp"
+    android:layout_width="150dp"
+    android:layout_height="195dp"
     android:layout_marginLeft="5dp"
-    android:layout_marginRight="5dp"
     android:layout_marginTop="10dp"
+    android:layout_marginRight="5dp"
     android:clickable="false"
     android:focusable="false"
     android:orientation="vertical">
@@ -113,6 +113,16 @@
 
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_forecast_time"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginTop="15dp"
+            android:fontFamily="@font/avenir_ltstd_light"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
 
     </LinearLayout>
 

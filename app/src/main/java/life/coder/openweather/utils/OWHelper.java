@@ -13,8 +13,8 @@ import life.coder.openweather.R;
  */
 public class OWHelper {
 
-    public static String convertDateTime(Date date) {
-        SimpleDateFormat formatter = new SimpleDateFormat("E',' MMM dd kk:mm");
+    public static String convertDateTime(Date date, String pattern) { //"E',' MMM dd kk:mm"
+        SimpleDateFormat formatter = new SimpleDateFormat(pattern);
         return formatter.format(date);
     }
 
