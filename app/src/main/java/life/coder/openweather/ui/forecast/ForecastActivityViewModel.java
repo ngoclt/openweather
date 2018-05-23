@@ -1,4 +1,4 @@
-package life.coder.openweather.ui;
+package life.coder.openweather.ui.forecast;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
@@ -19,8 +19,8 @@ public class ForecastActivityViewModel extends AndroidViewModel {
         super(application);
     }
 
-    LiveData<OWForecast> getOwForeCastLiveData(String lat, String lon, OWCallback callback) {
-        return OWRepository.getInstance().getOWForeCast(lat, lon, callback);
+    public LiveData<OWForecast> getOwForeCastLiveData(String lat, String lon, int limit, OWCallback callback) {
+        return OWRepository.getInstance().getOWForeCast(lat, lon, limit, callback);
     }
 
 }

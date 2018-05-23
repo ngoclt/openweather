@@ -1,4 +1,4 @@
-package life.coder.openweather.ui;
+package life.coder.openweather.ui.forecast;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -9,11 +9,14 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import life.coder.openweather.R;
+import life.coder.openweather.api.model.OWCityWeather;
 import life.coder.openweather.api.model.OWForecast;
 import life.coder.openweather.utils.OWCallback;
 
@@ -23,6 +26,7 @@ import life.coder.openweather.utils.OWCallback;
 
 public class ForecastActivity extends AppCompatActivity implements OWCallback, Observer<OWForecast> {
 
+    private LinearLayout ltMainContainer;
     String longitude, latitude;
     ForecastActivityViewModel viewModel;
     RecyclerView rcForecast;
@@ -33,6 +37,8 @@ public class ForecastActivity extends AppCompatActivity implements OWCallback, O
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.forecast);
+
+        ltMainContainer = findViewById(R.id.lt_main_container);
 
         rcForecast = findViewById(R.id.rc_forecast);
         ltRefresh = findViewById(R.id.lt_refresh);
@@ -50,7 +56,7 @@ public class ForecastActivity extends AppCompatActivity implements OWCallback, O
         rcForecast.setAdapter(adapter);
 
         ltRefresh.setOnRefreshListener(() ->
-                viewModel.getOwForeCastLiveData(latitude, longitude, this));
+                viewModel.getOwForeCastLiveData(latitude, longitude, 40, this));
     }
 
     @Override
@@ -67,7 +73,7 @@ public class ForecastActivity extends AppCompatActivity implements OWCallback, O
 
     private void observeViewModel(ForecastActivityViewModel viewModel) {
 
-        viewModel.getOwForeCastLiveData(latitude, longitude, this).observe(this,
+        viewModel.getOwForeCastLiveData(latitude, longitude, 0, this).observe(this,
                 owForecast -> {
                     if (owForecast != null) {
                         setInfo(owForecast.getList());
@@ -75,7 +81,7 @@ public class ForecastActivity extends AppCompatActivity implements OWCallback, O
                 });
     }
 
-    private void setInfo(List<OWForecast.ListBean> owForecastList) {
+    private void setInfo(List<OWCityWeather> owForecastList) {
         adapter.setData(owForecastList);
         adapter.notifyDataSetChanged();
     }
@@ -87,6 +93,7 @@ public class ForecastActivity extends AppCompatActivity implements OWCallback, O
 
     @Override
     public void onFailure(@Nullable String error) {
+        Log.e("NickHapper", error);
     }
 
     @Override
