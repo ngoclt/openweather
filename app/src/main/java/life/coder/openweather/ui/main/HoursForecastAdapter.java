@@ -21,7 +21,7 @@ public class HoursForecastAdapter extends RecyclerView.Adapter<HoursForecastAdap
 
     class HoursForecastViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView tvTemperature, tvWeatherIcon, tvWind, tvHumidity;
+        private TextView tvTemperature, tvWeatherIcon, tvWind, tvHumidity, tvForeCastTime;
         private LinearLayout ltContainer;
 
         HoursForecastViewHolder(View itemView) {
@@ -31,15 +31,17 @@ public class HoursForecastAdapter extends RecyclerView.Adapter<HoursForecastAdap
             tvWeatherIcon = itemView.findViewById(R.id.tv_weather_icon);
             tvWind = itemView.findViewById(R.id.tv_wind);
             tvHumidity = itemView.findViewById(R.id.tv_humidity);
+            tvForeCastTime = itemView.findViewById(R.id.tv_forecast_time);
             ltContainer = itemView.findViewById(R.id.lt_today_forecast);
             ltContainer.setBackgroundColor(OWHelper.getColorWithAlpha(Color.BLACK, 0.4f));
         }
 
-        public void bindItem(OWCityWeather item, String icon) {
+        void bindItem(OWCityWeather item, String icon) {
             tvTemperature.setText(Integer.toString(item.getMain().getTemp().intValue()));
             tvWeatherIcon.setText(icon);
             tvWind.setText(Float.toString(item.getWind().getSpeed()).concat(" mps"));
             tvHumidity.setText(Integer.toString(item.getMain().getHumidity().intValue()));
+            tvForeCastTime.setText(OWHelper.convertDateTime(item.getDate(), "EE kk:mm"));
         }
     }
 

@@ -39,6 +39,8 @@ public class MainActivity extends AppCompatActivity implements OWCallback, Obser
             tvThermometer, tvWind,
             tvWeatherIcon;
     private Button btnMenu, btnBookmark;
+    private HoursForecastFragment forecastFragment;
+
 
     private LinearLayout ltMainContainer;
 
@@ -73,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements OWCallback, Obser
         btnBookmark = findViewById(R.id.btn_bookmark);
 
         viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        forecastFragment = new HoursForecastFragment();
     }
 
     @Override
@@ -172,7 +175,6 @@ public class MainActivity extends AppCompatActivity implements OWCallback, Obser
     }
 
     private void displayTodayForecastFragment() {
-        HoursForecastFragment forecastFragment = new HoursForecastFragment();
         Bundle bundle = new Bundle(4);
         bundle.putString("longitude", longitude);
         bundle.putString("latitude", latitude);
@@ -180,7 +182,9 @@ public class MainActivity extends AppCompatActivity implements OWCallback, Obser
         bundle.putLong("sunset", sunset);
 
         forecastFragment.setArguments(bundle);
-        getSupportFragmentManager().beginTransaction().add(R.id.ln_fragment_hours_forecast, forecastFragment).addToBackStack(null).commit();
+        if (!getSupportFragmentManager().getFragments().contains(forecastFragment)) {
+            getSupportFragmentManager().beginTransaction().add(R.id.ln_fragment_hours_forecast, forecastFragment).addToBackStack(null).commit();
+        }
     }
 
     public void openForecastActivity(View target) {
@@ -189,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements OWCallback, Obser
         intent.putExtra("latitude", latitude);
         intent.putExtra("sunrise", sunrise);
         intent.putExtra("sunset", sunset);
-        
+
         startActivity(intent);
     }
 
