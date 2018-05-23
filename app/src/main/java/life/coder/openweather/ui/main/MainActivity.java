@@ -15,6 +15,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -23,7 +25,7 @@ import java.text.DecimalFormatSymbols;
 
 import life.coder.openweather.R;
 import life.coder.openweather.api.model.OWCityWeather;
-import life.coder.openweather.ui.ForecastActivity;
+import life.coder.openweather.ui.forecast.ForecastActivity;
 import life.coder.openweather.utils.OWCallback;
 import life.coder.openweather.utils.OWHelper;
 
@@ -36,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements OWCallback, Obser
             tvTemperature, tvHumidity,
             tvThermometer, tvWind,
             tvWeatherIcon;
+    private Button btnMenu, btnBookmark;
 
     private LinearLayout ltMainContainer;
 
@@ -66,9 +69,8 @@ public class MainActivity extends AppCompatActivity implements OWCallback, Obser
         tvWind = findViewById(R.id.tv_wind);
         tvWeatherIcon = findViewById(R.id.tv_weather_icon);
 
-        ltMainContainer.setOnClickListener(view -> {
-            openForecastActivity();
-        });
+        btnMenu = findViewById(R.id.btn_menu);
+        btnBookmark = findViewById(R.id.btn_bookmark);
 
         viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
     }
@@ -181,10 +183,13 @@ public class MainActivity extends AppCompatActivity implements OWCallback, Obser
         getSupportFragmentManager().beginTransaction().add(R.id.ln_fragment_hours_forecast, forecastFragment).addToBackStack(null).commit();
     }
 
-    private void openForecastActivity() {
+    public void openForecastActivity(View target) {
         Intent foreCastIntent = new Intent(this, ForecastActivity.class);
         foreCastIntent.putExtra("lat", latitude);
         foreCastIntent.putExtra("lon", longitude);
         startActivity(foreCastIntent);
+    }
+
+    private void openBookmarkCityActivity(View target) {
     }
 }

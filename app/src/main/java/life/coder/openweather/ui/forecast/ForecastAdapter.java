@@ -1,4 +1,4 @@
-package life.coder.openweather.ui;
+package life.coder.openweather.ui.forecast;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

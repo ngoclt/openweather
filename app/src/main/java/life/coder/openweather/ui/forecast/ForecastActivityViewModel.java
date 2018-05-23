@@ -1,4 +1,4 @@
-package life.coder.openweather.ui;
+package life.coder.openweather.ui.forecast;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;

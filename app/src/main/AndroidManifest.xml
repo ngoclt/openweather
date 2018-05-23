@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.ForecastActivity"
+            android:name=".ui.forecast.ForecastActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
 
         <meta-data

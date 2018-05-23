@@ -9,25 +9,44 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/bg_day"
-        android:orientation="vertical"
-        android:visibility="visible">
+        android:orientation="vertical">
+
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
             android:layout_marginTop="20dp"
-            android:orientation="vertical">
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_menu"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="left"
+                android:background="@drawable/menu_btn"
+                android:onClick="openForecastActivity" />
 
             <TextView
                 android:id="@+id/tv_city_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/avenir_ltstd_roman"
+                android:layout_marginTop="10dp"
+                android:layout_weight="0.6"
+                android:fontFamily="@font/avenir_ltstd_light"
                 android:text="-"
                 android:textAlignment="center"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
-                android:textSize="18sp" />
+                android:textSize="30sp" />
+
+            <Button
+                android:id="@+id/btn_bookmark"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="right"
+                android:background="@drawable/bookmark_btn"
+                android:onClick="openBookmarkCityActivity" />
         </LinearLayout>
 
         <LinearLayout
