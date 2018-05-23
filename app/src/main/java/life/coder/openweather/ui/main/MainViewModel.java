@@ -10,7 +10,7 @@ import life.coder.openweather.repository.OWRepository;
 import life.coder.openweather.utils.OWCallback;
 
 /**
- * Created by thegaylord on 30/11/2017.
+ * Created by ngocle on 30/11/2017.
  */
 
 public class MainViewModel extends AndroidViewModel {

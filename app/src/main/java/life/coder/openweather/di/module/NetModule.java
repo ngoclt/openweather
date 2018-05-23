@@ -17,7 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import timber.log.Timber;
 
 /**
- * Created by thegaylord on 30/11/2017.
+ * Created by ngocle on 30/11/2017.
  */
 
 @Module

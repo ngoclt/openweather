@@ -21,7 +21,7 @@ import life.coder.openweather.api.model.OWForecast;
 import life.coder.openweather.utils.OWCallback;
 
 /**
- * Created by thegaylord on 08/12/2017.
+ * Created by ngocle on 08/12/2017.
  */
 
 public class ForecastActivity extends AppCompatActivity implements OWCallback, Observer<OWForecast> {

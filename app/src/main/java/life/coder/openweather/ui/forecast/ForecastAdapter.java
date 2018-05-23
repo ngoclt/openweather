@@ -16,7 +16,7 @@ import life.coder.openweather.api.model.OWCityWeather;
 import life.coder.openweather.utils.OWHelper;
 
 /**
- * Created by TheGayLord on 13/04/2018.
+ * Created by ngocle on 13/04/2018.
  */
 public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastViewHolder> {
 

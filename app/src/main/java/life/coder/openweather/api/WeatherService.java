@@ -7,7 +7,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 /**
- * Created by thegaylord on 16/11/2017.
+ * Created by ngocle on 16/11/2017.
  */
 
 public interface WeatherService {

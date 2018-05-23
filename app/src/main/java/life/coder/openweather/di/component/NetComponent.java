@@ -7,7 +7,7 @@ import life.coder.openweather.di.module.NetModule;
 import life.coder.openweather.repository.OWRepository;
 
 /**
- * Created by thegaylord on 30/11/2017.
+ * Created by ngocle on 30/11/2017.
  */
 
 @Singleton
