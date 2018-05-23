@@ -9,7 +9,7 @@ import java.util.Date;
 import life.coder.openweather.R;
 
 /**
- * Created by TheGayLord on 13/04/2018.
+ * Created by ngocle on 13/04/2018.
  */
 public class OWHelper {
 

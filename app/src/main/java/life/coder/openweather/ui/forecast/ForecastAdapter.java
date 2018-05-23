@@ -1,13 +1,13 @@
 package life.coder.openweather.ui.forecast;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 
 import java.util.List;
 
@@ -16,29 +16,26 @@ import life.coder.openweather.api.model.OWCityWeather;
 import life.coder.openweather.utils.OWHelper;
 
 /**
- * Created by TheGayLord on 13/04/2018.
+ * Created by ngocle on 13/04/2018.
  */
 public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastViewHolder> {
 
     class ForecastViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView tvForecastDate, tvForecastIcon, tvForecastTemp;
-        private ConstraintLayout ctContainer;
+        private LinearLayout ltContainer;
 
         ForecastViewHolder(View itemView) {
             super(itemView);
 
-            tvForecastDate = itemView.findViewById(R.id.tv_forecast_date);
-            tvForecastIcon = itemView.findViewById(R.id.tv_forecast_icon);
-            tvForecastTemp = itemView.findViewById(R.id.tv_forecast_temp);
-            ctContainer = itemView.findViewById(R.id.ct_container);
+
+            ltContainer = itemView.findViewById(R.id.lt_today_forecast);
+            ltContainer.setBackgroundColor(OWHelper.getColorWithAlpha(Color.BLACK, 0.4f));
+
 
         }
 
         public void bindItem(OWCityWeather item, String icon) {
-            tvForecastDate.setText(OWHelper.convertDateTime(item.getDate()));
-            tvForecastIcon.setText(icon);
-            tvForecastTemp.setText(String.valueOf(item.getMain().getTemp()));
+
         }
     }
 
@@ -62,7 +59,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
     @Override
     public ForecastViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View inflatedView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.forecastviewholder, parent, false);
+                .inflate(R.layout.days_forecast_item, parent, false);
         return new ForecastViewHolder(inflatedView);
     }
 

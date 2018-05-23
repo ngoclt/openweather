@@ -5,7 +5,7 @@ import android.app.Application;
 import life.coder.openweather.di.component.NetComponent;
 
 /**
- * Created by thegaylord on 30/11/2017.
+ * Created by ngocle on 30/11/2017.
  */
 
 public class App extends Application {

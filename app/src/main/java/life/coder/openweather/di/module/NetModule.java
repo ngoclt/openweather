@@ -17,12 +17,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import timber.log.Timber;
 
 /**
- * Created by thegaylord on 30/11/2017.
+ * Created by ngocle on 30/11/2017.
  */
 
 @Module
 public class NetModule {
-    private static String appid = "ede3f0ad0f2ae832d35e0e46c5826edf";
+    private static String appid_free = "ede3f0ad0f2ae832d35e0e46c5826edf";
+    // This paid API Key is shared via: https://gist.github.com/SebastianM/d4de7c3427883896b4b8
+    private static String appid_paid = "bd5e378503939ddaee76f12ad7a97608";
 
     public NetModule() {
     }
@@ -45,7 +47,7 @@ public class NetModule {
             HttpUrl originalHttpUrl = original.url();
 
             HttpUrl url = originalHttpUrl.newBuilder()
-                    .addQueryParameter("appid", appid)
+                    .addQueryParameter("appid", appid_paid)
                     .addQueryParameter("units", "metric")
                     .build();
 

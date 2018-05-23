@@ -7,7 +7,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 /**
- * Created by thegaylord on 16/11/2017.
+ * Created by ngocle on 16/11/2017.
  */
 
 public interface WeatherService {
@@ -19,6 +19,12 @@ public interface WeatherService {
 
     @GET("forecast")
     Call<OWForecast> getForeCast(
+            @Query("lat") String lat,
+            @Query("lon") String lon,
+            @Query("cnt") int limit);
+
+    @GET("forecast/daily")
+    Call<OWForecast> getDailyForeCast(
             @Query("lat") String lat,
             @Query("lon") String lon,
             @Query("cnt") int limit);

@@ -10,12 +10,12 @@ import life.coder.openweather.repository.OWRepository;
 import life.coder.openweather.utils.OWCallback;
 
 /**
- * Created by thegaylord on 08/12/2017.
+ * Created by ngocle on 23/05/2017.
  */
 
-public class ForecastActivityViewModel extends AndroidViewModel {
+public class ForecastViewModel extends AndroidViewModel {
 
-    public ForecastActivityViewModel(@NonNull Application application) {
+    public ForecastViewModel(@NonNull Application application) {
         super(application);
     }
 
