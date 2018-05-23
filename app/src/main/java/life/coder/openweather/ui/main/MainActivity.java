@@ -184,10 +184,13 @@ public class MainActivity extends AppCompatActivity implements OWCallback, Obser
     }
 
     public void openForecastActivity(View target) {
-        Intent foreCastIntent = new Intent(this, ForecastActivity.class);
-        foreCastIntent.putExtra("lat", latitude);
-        foreCastIntent.putExtra("lon", longitude);
-        startActivity(foreCastIntent);
+        Intent intent = new Intent(this, ForecastActivity.class);
+        intent.putExtra("longitude", longitude);
+        intent.putExtra("latitude", latitude);
+        intent.putExtra("sunrise", sunrise);
+        intent.putExtra("sunset", sunset);
+        
+        startActivity(intent);
     }
 
     private void openBookmarkCityActivity(View target) {

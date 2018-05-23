@@ -22,4 +22,10 @@ public interface WeatherService {
             @Query("lat") String lat,
             @Query("lon") String lon,
             @Query("cnt") int limit);
+
+    @GET("forecast/daily")
+    Call<OWForecast> getDailyForeCast(
+            @Query("lat") String lat,
+            @Query("lon") String lon,
+            @Query("cnt") int limit);
 }

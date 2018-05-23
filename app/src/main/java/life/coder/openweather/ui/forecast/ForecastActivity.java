@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import life.coder.openweather.R;
 import life.coder.openweather.api.model.OWCityWeather;
 import life.coder.openweather.api.model.OWForecast;
 import life.coder.openweather.utils.OWCallback;
+import life.coder.openweather.utils.OWHelper;
 
 /**
  * Created by ngocle on 08/12/2017.
@@ -27,7 +29,10 @@ import life.coder.openweather.utils.OWCallback;
 public class ForecastActivity extends AppCompatActivity implements OWCallback, Observer<OWForecast> {
 
     private LinearLayout ltMainContainer;
-    String longitude, latitude;
+    private String longitude, latitude;
+    private long sunset = 0;
+    private long sunrise = 0;
+
     ForecastViewModel viewModel;
     RecyclerView rcForecast;
     ForecastAdapter adapter;
@@ -64,9 +69,15 @@ public class ForecastActivity extends AppCompatActivity implements OWCallback, O
         super.onResume();
         Intent intent = getIntent();
         if (intent != null && intent.getExtras() != null) {
-            longitude = intent.getExtras().getString("lon");
-            latitude = intent.getExtras().getString("lat");
+            longitude = intent.getExtras().getString("longitude");
+            latitude = intent.getExtras().getString("latitude");
+            sunrise = intent.getExtras().getLong("sunrise");
+            sunset = intent.getExtras().getLong("sunset");
+
+            int backgroundId = OWHelper.getBackground(sunrise, sunset);
+            ltMainContainer.setBackgroundResource(backgroundId);
         }
+
         viewModel = ViewModelProviders.of(this).get(ForecastViewModel.class);
         observeViewModel(viewModel);
     }
@@ -101,5 +112,9 @@ public class ForecastActivity extends AppCompatActivity implements OWCallback, O
         if (owForecast != null) {
             setInfo(owForecast.getList());
         }
+    }
+
+    public void clickOnBackBTN(View target) {
+        onBackPressed();
     }
 }
