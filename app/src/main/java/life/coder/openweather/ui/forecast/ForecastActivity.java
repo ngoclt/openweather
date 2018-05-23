@@ -28,7 +28,7 @@ public class ForecastActivity extends AppCompatActivity implements OWCallback, O
 
     private LinearLayout ltMainContainer;
     String longitude, latitude;
-    ForecastActivityViewModel viewModel;
+    ForecastViewModel viewModel;
     RecyclerView rcForecast;
     ForecastAdapter adapter;
     SwipeRefreshLayout ltRefresh;
@@ -67,11 +67,11 @@ public class ForecastActivity extends AppCompatActivity implements OWCallback, O
             longitude = intent.getExtras().getString("lon");
             latitude = intent.getExtras().getString("lat");
         }
-        viewModel = ViewModelProviders.of(this).get(ForecastActivityViewModel.class);
+        viewModel = ViewModelProviders.of(this).get(ForecastViewModel.class);
         observeViewModel(viewModel);
     }
 
-    private void observeViewModel(ForecastActivityViewModel viewModel) {
+    private void observeViewModel(ForecastViewModel viewModel) {
 
         viewModel.getOwForeCastLiveData(latitude, longitude, 0, this).observe(this,
                 owForecast -> {
