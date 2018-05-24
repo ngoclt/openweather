@@ -7,6 +7,7 @@ import javax.inject.Inject;
 
 import life.coder.openweather.api.WeatherService;
 import life.coder.openweather.api.model.OWCityWeather;
+import life.coder.openweather.api.model.OWDailyForecast;
 import life.coder.openweather.api.model.OWForecast;
 import life.coder.openweather.di.component.DaggerNetComponent;
 import life.coder.openweather.di.module.NetModule;
@@ -78,6 +79,26 @@ public class OWRepository {
 
                     @Override
                     public void onFailure(Call<OWForecast> call, Throwable t) {
+                        callback.onFailure(t.getLocalizedMessage());
+                    }
+                });
+        return data;
+    }
+
+    public LiveData<OWDailyForecast> getDailyForeCast(String lat, String lon, int limit, OWCallback callback) {
+        final MutableLiveData<OWDailyForecast> data = new MutableLiveData<>();
+        weatherService.getDailyForeCast(lat, lon, limit)
+                .enqueue(new Callback<OWDailyForecast>() {
+                    @Override
+                    public void onResponse(Call<OWDailyForecast> call, Response<OWDailyForecast> response) {
+                        if (response.isSuccessful()) {
+                            data.postValue(response.body());
+                            callback.onSuccess();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<OWDailyForecast> call, Throwable t) {
                         callback.onFailure(t.getLocalizedMessage());
                     }
                 });

@@ -34,6 +34,7 @@ import static android.content.pm.PackageManager.PERMISSION_DENIED;
 public class MainActivity extends AppCompatActivity implements OWCallback, Observer<OWCityWeather> {
 
     private static final int PERMISSION_REQUEST = 555;
+
     private TextView tvWeather, tvCityName,
             tvTemperature, tvHumidity,
             tvThermometer, tvWind,
@@ -47,7 +48,8 @@ public class MainActivity extends AppCompatActivity implements OWCallback, Obser
     private long sunset = 0;
     private long sunrise = 0;
 
-    String longitude = "24.9488344", latitude = "60.1864416";
+    private String cityName = "";
+    private String longitude = "24.9488344", latitude = "60.1864416";
     DecimalFormat df;
     DecimalFormatSymbols sym;
     MainViewModel viewModel;
@@ -148,10 +150,12 @@ public class MainActivity extends AppCompatActivity implements OWCallback, Obser
         sunset = owCityWeather.getSys().getSunset();
         sunrise = owCityWeather.getSys().getSunrise();
 
+        cityName = owCityWeather.getName();
+
         int backgroundId = OWHelper.getBackground(sunrise, sunset);
         ltMainContainer.setBackgroundResource(backgroundId);
 
-        tvCityName.setText(owCityWeather.getName());
+        tvCityName.setText(cityName);
 
         if (owCityWeather.getWeather().size() > 0) {
             String description = OWHelper.getCapSentences(owCityWeather.getWeather().get(0).getDescription());
@@ -193,6 +197,7 @@ public class MainActivity extends AppCompatActivity implements OWCallback, Obser
         intent.putExtra("latitude", latitude);
         intent.putExtra("sunrise", sunrise);
         intent.putExtra("sunset", sunset);
+        intent.putExtra("cityName", cityName);
 
         startActivity(intent);
     }

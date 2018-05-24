@@ -12,13 +12,14 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import life.coder.openweather.R;
-import life.coder.openweather.api.model.OWCityWeather;
-import life.coder.openweather.api.model.OWForecast;
+import life.coder.openweather.api.model.OWDailyForecast;
+import life.coder.openweather.api.model.OWDailyWeather;
 import life.coder.openweather.utils.OWCallback;
 import life.coder.openweather.utils.OWHelper;
 
@@ -26,17 +27,20 @@ import life.coder.openweather.utils.OWHelper;
  * Created by ngocle on 08/12/2017.
  */
 
-public class ForecastActivity extends AppCompatActivity implements OWCallback, Observer<OWForecast> {
+public class ForecastActivity extends AppCompatActivity implements OWCallback, Observer<OWDailyForecast> {
 
     private LinearLayout ltMainContainer;
     private String longitude, latitude;
+    private String cityName;
     private long sunset = 0;
     private long sunrise = 0;
 
     ForecastViewModel viewModel;
-    RecyclerView rcForecast;
     ForecastAdapter adapter;
+
     SwipeRefreshLayout ltRefresh;
+    RecyclerView rcForecast;
+    private TextView tvCityName;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,21 +51,10 @@ public class ForecastActivity extends AppCompatActivity implements OWCallback, O
 
         rcForecast = findViewById(R.id.rc_forecast);
         ltRefresh = findViewById(R.id.lt_refresh);
+        tvCityName = findViewById(R.id.tv_city_name);
+
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(this);
         rcForecast.setLayoutManager(mLinearLayoutManager);
-        long sunRise = 0;
-        long sunSet = 0;
-
-        if (getIntent() != null && getIntent().getExtras() != null) {
-            sunRise = getIntent().getExtras().getLong("sunRise", 0);
-            sunSet = getIntent().getExtras().getLong("sunSet", 0);
-        }
-
-        adapter = new ForecastAdapter(new ArrayList<>(), this, sunRise, sunSet);
-        rcForecast.setAdapter(adapter);
-
-        ltRefresh.setOnRefreshListener(() ->
-                viewModel.getOwForeCastLiveData(latitude, longitude, 40, this));
     }
 
     @Override
@@ -73,18 +66,28 @@ public class ForecastActivity extends AppCompatActivity implements OWCallback, O
             latitude = intent.getExtras().getString("latitude");
             sunrise = intent.getExtras().getLong("sunrise");
             sunset = intent.getExtras().getLong("sunset");
+            cityName = intent.getExtras().getString("cityName");
 
             int backgroundId = OWHelper.getBackground(sunrise, sunset);
             ltMainContainer.setBackgroundResource(backgroundId);
-        }
 
-        viewModel = ViewModelProviders.of(this).get(ForecastViewModel.class);
-        observeViewModel(viewModel);
+            tvCityName.setText(cityName);
+
+            adapter = new ForecastAdapter(new ArrayList<>(), this, sunrise, sunset);
+            rcForecast.setAdapter(adapter);
+
+            viewModel = ViewModelProviders.of(this).get(ForecastViewModel.class);
+            observeViewModel(viewModel);
+
+            ltRefresh.setOnRefreshListener(() ->
+                    observeViewModel(viewModel)
+            );
+        }
     }
 
     private void observeViewModel(ForecastViewModel viewModel) {
 
-        viewModel.getOwForeCastLiveData(latitude, longitude, 0, this).observe(this,
+        viewModel.getDailyForecastLiveData(latitude, longitude, 16, this).observe(this,
                 owForecast -> {
                     if (owForecast != null) {
                         setInfo(owForecast.getList());
@@ -92,8 +95,8 @@ public class ForecastActivity extends AppCompatActivity implements OWCallback, O
                 });
     }
 
-    private void setInfo(List<OWCityWeather> owForecastList) {
-        adapter.setData(owForecastList);
+    private void setInfo(List<OWDailyWeather> owDailyForecasts) {
+        adapter.setData(owDailyForecasts);
         adapter.notifyDataSetChanged();
     }
 
@@ -108,9 +111,9 @@ public class ForecastActivity extends AppCompatActivity implements OWCallback, O
     }
 
     @Override
-    public void onChanged(@Nullable OWForecast owForecast) {
-        if (owForecast != null) {
-            setInfo(owForecast.getList());
+    public void onChanged(@Nullable OWDailyForecast owDailyForecast) {
+        if (owDailyForecast != null) {
+            setInfo(owDailyForecast.getList());
         }
     }
 

@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 import java.util.List;
 
 import life.coder.openweather.R;
-import life.coder.openweather.api.model.OWCityWeather;
+import life.coder.openweather.api.model.OWDailyWeather;
 import life.coder.openweather.utils.OWHelper;
 
 /**
@@ -34,24 +34,24 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
 
         }
 
-        public void bindItem(OWCityWeather item, String icon) {
+        public void bindItem(OWDailyWeather item, String icon) {
 
         }
     }
 
-    private List<OWCityWeather> data;
+    private List<OWDailyWeather> data;
     private Context context;
     private long sunset = 0;
     private long sunrise = 0;
 
-    ForecastAdapter(List<OWCityWeather> data, Context context, long sunrise, long sunset) {
+    ForecastAdapter(List<OWDailyWeather> data, Context context, long sunrise, long sunset) {
         this.data = data;
         this.context = context;
         this.sunrise = sunrise;
         this.sunset = sunset;
     }
 
-    public void setData(List<OWCityWeather> data) {
+    public void setData(List<OWDailyWeather> data) {
         this.data = data;
     }
 
@@ -65,7 +65,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
 
     @Override
     public void onBindViewHolder(@NonNull ForecastViewHolder holder, int position) {
-        OWCityWeather item = data.get(position);
+        OWDailyWeather item = data.get(position);
         String icon = OWHelper.getWeatherIcon(item.getWeather().get(0).getId(), context, sunrise, sunset);
         holder.bindItem(item, icon);
     }
