@@ -11,6 +11,8 @@ public class OWDailyWeather {
     private Float deg;
     private Float clouds;
     private Float rain;
+    private Float humidity;
+    private Float pressure;
 
     public long getDt() {
         return dt;
@@ -38,6 +40,14 @@ public class OWDailyWeather {
 
     public Float getRain() {
         return rain;
+    }
+
+    public Float getHumidity() {
+        return humidity;
+    }
+
+    public Float getPressure() {
+        return pressure;
     }
 
     // Custom methods

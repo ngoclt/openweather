@@ -73,7 +73,7 @@ public class ForecastActivity extends AppCompatActivity implements OWCallback, O
 
             tvCityName.setText(cityName);
 
-            adapter = new ForecastAdapter(new ArrayList<>(), this, sunrise, sunset);
+            adapter = new ForecastAdapter(new ArrayList<>(), this);
             rcForecast.setAdapter(adapter);
 
             viewModel = ViewModelProviders.of(this).get(ForecastViewModel.class);

@@ -42,8 +42,13 @@ public class OWHelper {
     }
 
     public static String getWeatherIcon(int id, Context context, long sunrise, long sunset) {
+
+        // Check if still in the day
         long currentTime = System.currentTimeMillis() / 1000; // in seconds
-        if (currentTime >= sunrise && currentTime < sunset) {
+        Boolean isDay = currentTime >= sunrise && currentTime < sunset;
+
+        // If there is no sunrise and sunset time, just return the day icons
+        if ((sunrise == 0 && sunset == 0) || isDay) {
             switch (id / 100) {
                 case 2:
                     return context.getString(R.string.thunder_storm_day);
