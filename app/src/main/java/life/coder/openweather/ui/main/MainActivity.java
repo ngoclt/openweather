@@ -16,7 +16,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -25,6 +24,7 @@ import java.text.DecimalFormatSymbols;
 
 import life.coder.openweather.R;
 import life.coder.openweather.api.model.OWCityWeather;
+import life.coder.openweather.ui.bookmarkcity.BookmarkActivity;
 import life.coder.openweather.ui.forecast.ForecastActivity;
 import life.coder.openweather.utils.OWCallback;
 import life.coder.openweather.utils.OWHelper;
@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity implements OWCallback, Obser
             tvTemperature, tvHumidity,
             tvThermometer, tvWind,
             tvWeatherIcon;
-    private Button btnMenu, btnBookmark;
     private HoursForecastFragment forecastFragment;
 
 
@@ -72,9 +71,6 @@ public class MainActivity extends AppCompatActivity implements OWCallback, Obser
         tvThermometer = findViewById(R.id.tv_thermometer);
         tvWind = findViewById(R.id.tv_wind);
         tvWeatherIcon = findViewById(R.id.tv_weather_icon);
-
-        btnMenu = findViewById(R.id.btn_menu);
-        btnBookmark = findViewById(R.id.btn_bookmark);
 
         viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         forecastFragment = new HoursForecastFragment();
@@ -202,6 +198,12 @@ public class MainActivity extends AppCompatActivity implements OWCallback, Obser
         startActivity(intent);
     }
 
-    private void openBookmarkCityActivity(View target) {
+    public void openBookmarkCityActivity(View target) {
+        Intent intent = new Intent(this, BookmarkActivity.class);
+
+        intent.putExtra("sunrise", sunrise);
+        intent.putExtra("sunset", sunset);
+
+        startActivity(intent);
     }
 }
