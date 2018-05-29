@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -20,6 +19,7 @@ import java.util.List;
 import life.coder.openweather.R;
 import life.coder.openweather.api.model.OWDailyForecast;
 import life.coder.openweather.api.model.OWDailyWeather;
+import life.coder.openweather.ui.BaseActivity;
 import life.coder.openweather.utils.OWCallback;
 import life.coder.openweather.utils.OWHelper;
 
@@ -27,7 +27,9 @@ import life.coder.openweather.utils.OWHelper;
  * Created by ngocle on 08/12/2017.
  */
 
-public class ForecastActivity extends AppCompatActivity implements OWCallback, Observer<OWDailyForecast> {
+public class ForecastActivity extends BaseActivity implements OWCallback, Observer<OWDailyForecast> {
+
+    private static String TAG = "ForecastActivity";
 
     private LinearLayout ltMainContainer;
     private String longitude, latitude;
@@ -107,7 +109,8 @@ public class ForecastActivity extends AppCompatActivity implements OWCallback, O
 
     @Override
     public void onFailure(@Nullable String error) {
-        Log.e("NickHapper", error);
+        Log.e(TAG, error);
+
     }
 
     @Override

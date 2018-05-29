@@ -14,7 +14,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,6 +24,7 @@ import java.text.DecimalFormatSymbols;
 
 import life.coder.openweather.R;
 import life.coder.openweather.api.model.OWCityWeather;
+import life.coder.openweather.ui.BaseActivity;
 import life.coder.openweather.ui.bookmarkcity.BookmarkActivity;
 import life.coder.openweather.ui.forecast.ForecastActivity;
 import life.coder.openweather.utils.OWCallback;
@@ -31,7 +32,9 @@ import life.coder.openweather.utils.OWHelper;
 
 import static android.content.pm.PackageManager.PERMISSION_DENIED;
 
-public class MainActivity extends AppCompatActivity implements OWCallback, Observer<OWCityWeather> {
+public class MainActivity extends BaseActivity implements OWCallback, Observer<OWCityWeather> {
+
+    private static String TAG = "MainActivity";
 
     private static final int PERMISSION_REQUEST = 555;
 
@@ -54,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements OWCallback, Obser
     MainViewModel viewModel;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
@@ -133,6 +136,7 @@ public class MainActivity extends AppCompatActivity implements OWCallback, Obser
 
     @Override
     public void onFailure(@Nullable String error) {
+        Log.e(TAG, error);
     }
 
     @Override

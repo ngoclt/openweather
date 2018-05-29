@@ -18,6 +18,10 @@ public interface WeatherService {
             @Query("lat") String lat,
             @Query("lon") String lon);
 
+    @GET("weather")
+    Call<OWCityWeather> getCityWeather(
+            @Query("q") String query);
+
     @GET("forecast")
     Call<OWForecast> getForeCast(
             @Query("lat") String lat,

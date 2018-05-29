@@ -3,11 +3,16 @@ package life.coder.openweather.repository;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
+import com.google.gson.Gson;
+
+import java.io.IOException;
+
 import javax.inject.Inject;
 
 import life.coder.openweather.api.WeatherService;
 import life.coder.openweather.api.model.OWCityWeather;
 import life.coder.openweather.api.model.OWDailyForecast;
+import life.coder.openweather.api.model.OWError;
 import life.coder.openweather.api.model.OWForecast;
 import life.coder.openweather.di.component.DaggerNetComponent;
 import life.coder.openweather.di.module.NetModule;
@@ -53,6 +58,36 @@ public class OWRepository {
                         if (response.isSuccessful()) {
                             data.postValue(response.body());
                             callback.onSuccess();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<OWCityWeather> call, Throwable t) {
+                        callback.onFailure(t.getLocalizedMessage());
+                    }
+                });
+        return data;
+    }
+
+    public LiveData<OWCityWeather> getOWCityWeather(String query, OWCallback callback) {
+        final MutableLiveData<OWCityWeather> data = new MutableLiveData<>();
+
+        weatherService.getCityWeather(query)
+                .enqueue(new Callback<OWCityWeather>() {
+                    @Override
+                    public void onResponse(Call<OWCityWeather> call, Response<OWCityWeather> response) {
+                        if (response.isSuccessful()) {
+                            data.postValue(response.body());
+                            callback.onSuccess();
+                        } else {
+                            Gson gson = new Gson();
+                            OWError error = null;
+                            try {
+                                error = gson.fromJson(response.errorBody().string(), OWError.class);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            callback.onFailure(error.getMessage());
                         }
                     }
 

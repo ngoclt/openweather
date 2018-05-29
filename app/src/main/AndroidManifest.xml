@@ -29,7 +29,8 @@
 
         <activity
             android:name=".ui.bookmarkcity.BookmarkActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:windowSoftInputMode="stateVisible|adjustPan" />
 
         <meta-data
             android:name="preloaded_fonts"
