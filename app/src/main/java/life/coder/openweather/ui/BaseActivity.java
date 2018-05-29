@@ -21,7 +21,7 @@ public class BaseActivity extends AppCompatActivity {
         }
         builder.setTitle(title.toUpperCase())
                 .setMessage(message.toUpperCase())
-                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                .setPositiveButton(android.R.string.no, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         builder = null;
                     }

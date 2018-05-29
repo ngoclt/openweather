@@ -110,7 +110,7 @@ public class ForecastActivity extends BaseActivity implements OWCallback, Observ
     @Override
     public void onFailure(@Nullable String error) {
         Log.e(TAG, error);
-
+        showAlert("Error", error);
     }
 
     @Override

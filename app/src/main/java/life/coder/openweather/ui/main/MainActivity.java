@@ -51,7 +51,7 @@ public class MainActivity extends BaseActivity implements OWCallback, Observer<O
     private long sunrise = 0;
 
     private String cityName = "";
-    private String longitude = "24.9488344", latitude = "60.1864416";
+    private String longitude = "24.94", latitude = "60.17";
     DecimalFormat df;
     DecimalFormatSymbols sym;
     MainViewModel viewModel;
@@ -137,6 +137,7 @@ public class MainActivity extends BaseActivity implements OWCallback, Observer<O
     @Override
     public void onFailure(@Nullable String error) {
         Log.e(TAG, error);
+        showAlert("Error", error);
     }
 
     @Override

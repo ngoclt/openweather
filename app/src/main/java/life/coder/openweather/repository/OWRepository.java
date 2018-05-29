@@ -58,6 +58,15 @@ public class OWRepository {
                         if (response.isSuccessful()) {
                             data.postValue(response.body());
                             callback.onSuccess();
+                        } else {
+                            Gson gson = new Gson();
+                            OWError error = null;
+                            try {
+                                error = gson.fromJson(response.errorBody().string(), OWError.class);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            callback.onFailure(error.getMessage());
                         }
                     }
 
@@ -109,6 +118,15 @@ public class OWRepository {
                         if (response.isSuccessful()) {
                             data.postValue(response.body());
                             callback.onSuccess();
+                        } else {
+                            Gson gson = new Gson();
+                            OWError error = null;
+                            try {
+                                error = gson.fromJson(response.errorBody().string(), OWError.class);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            callback.onFailure(error.getMessage());
                         }
                     }
 
@@ -129,6 +147,15 @@ public class OWRepository {
                         if (response.isSuccessful()) {
                             data.postValue(response.body());
                             callback.onSuccess();
+                        } else {
+                            Gson gson = new Gson();
+                            OWError error = null;
+                            try {
+                                error = gson.fromJson(response.errorBody().string(), OWError.class);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            callback.onFailure(error.getMessage());
                         }
                     }
 

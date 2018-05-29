@@ -20,5 +20,5 @@
     <string name="degrees"></string>
     <string name="permission_denied">We need location permission to get your current weather :(</string>
     <string name="refresh"></string>
-    <string name="no_location">No location found</string>
+    <string name="no_location">No location found. App will get the forecast for default location which is Helsinki, Finland.</string>
 </resources>

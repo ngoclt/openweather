@@ -22,9 +22,11 @@ import timber.log.Timber;
 
 @Module
 public class NetModule {
-    private static String appid_free = "ede3f0ad0f2ae832d35e0e46c5826edf";
+    // This is Ngoc Le's free API key
+    private static String appid_paid = "ede3f0ad0f2ae832d35e0e46c5826edf";
     // This paid API Key is shared via: https://gist.github.com/SebastianM/d4de7c3427883896b4b8
-    private static String appid_paid = "bd5e378503939ddaee76f12ad7a97608";
+    // Since this app is using daily forecast API for Forecast screen which requires a paid key
+//    private static String appid_paid = "bd5e378503939ddaee76f12ad7a97608";
 
     public NetModule() {
     }
