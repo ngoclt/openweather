@@ -3,7 +3,7 @@ package life.coder.openweather.api.model;
 import java.util.List;
 
 /**
- * Created by thegangocleylord on 11/11/17.
+ * Created by ngocle on 11/11/17.
  */
 
 public class OWForecast {
