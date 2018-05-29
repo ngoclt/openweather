@@ -101,6 +101,12 @@ public class BookmarkActivity extends BaseActivity implements OWCallback, Observ
         }
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        hideKeyboard();
+    }
+
     private void refreshData() {
         // Clear all data here and reload
         weathers.clear();
@@ -146,6 +152,15 @@ public class BookmarkActivity extends BaseActivity implements OWCallback, Observ
         editor.commit();
     }
 
+    private void hideKeyboard() {
+        try {
+            InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        } catch (Exception e) {
+            Log.d(TAG, e.toString());
+        }
+    }
+
     @Override
     public void onSuccess() {
 
@@ -180,12 +195,7 @@ public class BookmarkActivity extends BaseActivity implements OWCallback, Observ
         isAdding = true;
         btnAdd.setEnabled(false);
 
-        try {
-            InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-        } catch (Exception e) {
-            Log.d(TAG, e.toString());
-        }
+        hideKeyboard();
 
         ltRefresh.setRefreshing(true);
         String city = etSearchCity.getText().toString();
