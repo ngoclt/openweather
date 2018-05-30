@@ -131,6 +131,12 @@ public class BookmarkActivity extends BaseActivity implements OWCallback, Observ
     private void insertCityWeather(OWCityWeather owCityWeather) {
         if (!owCityWeather.getName().isEmpty()) {
             if (isAdding) {
+                if (cities.contains(owCityWeather.getName())) {
+                    showAlert("ERROR", "City is already added.");
+                    ltRefresh.setRefreshing(false);
+                    return;
+                }
+
                 addToSharedPreferences(owCityWeather.getName());
                 isAdding = false;
                 btnAdd.setEnabled(true);
