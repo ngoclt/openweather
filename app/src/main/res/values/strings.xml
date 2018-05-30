@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Open Weather</string>
+    <string name="app_name">Weathery</string>
     <string name="thermometer"></string>
     <string name="humidity"></string>
     <string name="barometer"></string>

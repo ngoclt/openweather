@@ -211,4 +211,9 @@ public class MainActivity extends BaseActivity implements OWCallback, Observer<O
 
         startActivity(intent);
     }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
 }
