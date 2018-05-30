@@ -76,7 +76,6 @@ public class MainActivity extends BaseActivity implements OWCallback, Observer<O
         tvWeatherIcon = findViewById(R.id.tv_weather_icon);
 
         viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-        forecastFragment = new HoursForecastFragment();
     }
 
     @Override
@@ -180,12 +179,17 @@ public class MainActivity extends BaseActivity implements OWCallback, Observer<O
     }
 
     private void displayTodayForecastFragment() {
+        if (forecastFragment != null) {
+            return;
+        }
+        
         Bundle bundle = new Bundle(4);
         bundle.putString("longitude", longitude);
         bundle.putString("latitude", latitude);
         bundle.putLong("sunrise", sunrise);
         bundle.putLong("sunset", sunset);
 
+        forecastFragment = new HoursForecastFragment();
         forecastFragment.setArguments(bundle);
         if (!getSupportFragmentManager().getFragments().contains(forecastFragment)) {
             getSupportFragmentManager().beginTransaction().add(R.id.ln_fragment_hours_forecast, forecastFragment).addToBackStack(null).commit();
